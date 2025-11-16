@@ -1,0 +1,126 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 2,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-11-09T12:21:15.508Z",
+    "end": "2025-11-09T12:21:15.928Z",
+    "duration": 420,
+    "testsRegistered": 2,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "16aed133-eb4a-448b-a5f2-993bff87f7fd",
+      "title": "",
+      "fullFile": "specs/pass.cy.js",
+      "file": "specs/pass.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "bb712f0c-00c1-4c6c-89b5-96e569f7f9b7",
+          "title": "Example domain",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "MM-T001 has title",
+              "fullTitle": "Example domain MM-T001 has title",
+              "timedOut": null,
+              "duration": 169,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit(\"\");\ncy.title().should(\"eq\", \"Example Domain\");",
+              "err": {},
+              "uuid": "642e1d05-c7e3-47ce-a054-47665df77dd3",
+              "parentUUID": "bb712f0c-00c1-4c6c-89b5-96e569f7f9b7",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "MM-T002 has heading",
+              "fullTitle": "Example domain MM-T002 has heading",
+              "timedOut": null,
+              "duration": 235,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit(\"\");\ncy.get(\"h1\").should(\"contain\", \"Example Domain\");",
+              "err": {},
+              "uuid": "3980bfd5-6c9d-438e-9562-27c125d4e47e",
+              "parentUUID": "bb712f0c-00c1-4c6c-89b5-96e569f7f9b7",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "642e1d05-c7e3-47ce-a054-47665df77dd3",
+            "3980bfd5-6c9d-438e-9562-27c125d4e47e"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 404,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": true,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "id": "default",
+        "reportDir": "results/mochawesome-report",
+        "quiet": true,
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}

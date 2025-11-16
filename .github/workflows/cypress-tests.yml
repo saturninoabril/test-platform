@@ -1,0 +1,161 @@
+name: Cypress Tests (Artifact Upload)
+
+on:
+  push:
+    branches: [main, 'release/*']
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:17.6
+        env:
+          POSTGRES_USER: change_user
+          POSTGRES_PASSWORD: change_password
+          POSTGRES_DB: cypress_artifact_test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5433:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      # Install main app dependencies and start server
+      - name: Install main app dependencies
+        run: npm ci
+
+      - name: Setup test database
+        run: |
+          # Set database connection for artifact upload test
+          echo "DB_HOST=localhost" >> .env
+          echo "DB_PORT=5433" >> .env
+          echo "DB_USER=change_user" >> .env
+          echo "DB_PASSWORD=change_password" >> .env
+          echo "DB_NAME=cypress_artifact_test_db" >> .env
+          echo "NODE_ENV=test" >> .env
+          echo "NEXTAUTH_URL=http://localhost:3001" >> .env
+          # Generate a JWT secret for testing
+          JWT_SECRET=$(openssl rand -hex 32)
+          echo "JWT_SECRET=$JWT_SECRET" >> .env
+          # Generate JWT token
+          npm run generate-jwt
+          echo "API_URL=http://localhost:3001" >> .env
+
+      - name: Push database schema
+        run: npm run db:push
+
+      - name: Start Next.js server
+        run: |
+          npm run dev &
+          # Wait for server to be ready
+          timeout 60 bash -c 'until curl -f http://localhost:3001/api/public > /dev/null 2>&1; do sleep 2; done'
+        env:
+          CI: true
+
+      # Install test-run/cypress dependencies and run tests
+      - name: Install Cypress test dependencies
+        run: npm ci
+        working-directory: ./test-run/cypress
+
+      - name: Run Cypress tests
+        id: tests
+        continue-on-error: true
+        run: npm test
+        working-directory: ./test-run/cypress
+
+      - name: Upload test artifact to local API server
+        if: always()
+        run: |
+          # Load JWT_TOKEN from .env file
+          set -a
+          source .env
+          set +a
+
+          # Read the artifact JSON file
+          ARTIFACT=$(cat test-run/cypress/results/mochawesome-report/mochawesome.json)
+
+          # Create payload with artifact and GitHub metadata
+          PAYLOAD=$(jq -n \
+            --arg framework "cypress" \
+            --argjson artifact "$ARTIFACT" \
+            --arg repo "${{ github.repository }}" \
+            --arg sha "${{ github.sha }}" \
+            --arg headRef "${{ github.head_ref }}" \
+            --arg baseRef "${{ github.base_ref }}" \
+            --arg ref "${{ github.ref }}" \
+            --arg actor "${{ github.actor }}" \
+            --arg runId "${{ github.run_id }}" \
+            --argjson runNumber "${{ github.run_number }}" \
+            --argjson runAttempt "${{ github.run_attempt }}" \
+            --arg job "${{ github.job }}" \
+            --arg runner "${{ runner.name }}" \
+            '{
+              framework: $framework,
+              artifact: $artifact,
+              githubRepository: $repo,
+              githubSha: $sha,
+              githubHeadRef: $headRef,
+              githubBaseRef: $baseRef,
+              githubRef: $ref,
+              githubActor: $actor,
+              githubRunId: $runId,
+              githubRunNumber: $runNumber,
+              githubRunAttempt: $runAttempt,
+              githubJob: $job,
+              runnerName: $runner
+            }')
+
+          # Send to local API server
+          RESPONSE=$(curl -X POST "http://localhost:3001/api/test-reports" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $JWT_TOKEN" \
+            -d "$PAYLOAD" \
+            -w "\n%{http_code}" \
+            -s)
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | head -n-1)
+
+          echo "HTTP Response Code: $HTTP_CODE"
+          echo "Response Body: $BODY"
+
+          # Check if upload was successful (2xx status code)
+          if [[ "$HTTP_CODE" =~ ^2 ]]; then
+            echo "✅ Artifact uploaded successfully"
+            exit 0
+          else
+            echo "❌ Artifact upload failed"
+            exit 1
+          fi
+
+      - name: Upload Cypress videos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos
+          path: test-run/cypress/cypress/videos/
+          retention-days: 30
+
+      - name: Upload Cypress report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-report
+          path: test-run/cypress/results/
+          retention-days: 30

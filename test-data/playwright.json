@@ -1,0 +1,5400 @@
+{
+  "config": {
+    "configFile": "/mattermost/e2e-tests/playwright/playwright.config.ts",
+    "rootDir": "/mattermost/e2e-tests/playwright/specs",
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": "/mattermost/e2e-tests/playwright/global_setup.ts",
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "open": "never",
+          "outputFolder": "./results/reporter"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "./results/reporter/results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "./results/reporter/results.xml"
+        }
+      ],
+      ["list", null]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/mattermost/e2e-tests/playwright/results/output",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "setup",
+        "name": "setup",
+        "testDir": "/mattermost/e2e-tests/playwright/specs",
+        "testIgnore": [],
+        "testMatch": ["/test_setup\\.ts/"],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/mattermost/e2e-tests/playwright/results/output",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "ipad",
+        "name": "ipad",
+        "testDir": "/mattermost/e2e-tests/playwright/specs",
+        "testIgnore": [],
+        "testMatch": ["**/*.@(spec|test).?(c|m)[jt]s?(x)"],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/mattermost/e2e-tests/playwright/results/output",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chrome",
+        "name": "chrome",
+        "testDir": "/mattermost/e2e-tests/playwright/specs",
+        "testIgnore": [],
+        "testMatch": ["**/*.@(spec|test).?(c|m)[jt]s?(x)"],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/mattermost/e2e-tests/playwright/results/output",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/mattermost/e2e-tests/playwright/specs",
+        "testIgnore": [],
+        "testMatch": ["**/*.@(spec|test).?(c|m)[jt]s?(x)"],
+        "timeout": 60000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "test_setup.ts",
+      "file": "test_setup.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "ensure plugins are loaded",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "setup",
+              "projectName": "setup",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 282,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:43:29.392Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6563680aaff571b06541-cea9af50f46ee95e2f56",
+          "file": "test_setup.ts",
+          "line": 6,
+          "column": 6
+        },
+        {
+          "title": "ensure server deployment",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "setup",
+              "projectName": "setup",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 205,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:43:29.820Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6563680aaff571b06541-a1bde0bb5e31c9624004",
+          "file": "test_setup.ts",
+          "line": 11,
+          "column": 6
+        }
+      ]
+    },
+    {
+      "title": "accessibility/channels/account_menu_keyboard.spec.ts",
+      "file": "accessibility/channels/account_menu_keyboard.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-63451 should be able to navigate the account settings menu with the keyboard after opening it with the mouse",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3415,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:43:30.834Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d15b14bb6a63358e8144-abf530afce059ea37a69",
+          "file": "accessibility/channels/account_menu_keyboard.spec.ts",
+          "line": 9,
+          "column": 5
+        },
+        {
+          "title": "MM-63451 should be able to navigate the account settings menu with the keyboard after opening it with the keyboard",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3100,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:43:34.332Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d15b14bb6a63358e8144-f53407caa4896a88e1e1",
+          "file": "accessibility/channels/account_menu_keyboard.spec.ts",
+          "line": 28,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "accessibility/channels/account_settings_sidebar.spec.ts",
+      "file": "accessibility/channels/account_settings_sidebar.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Settings sidebar should be keyboard accessible",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3668,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:43:37.445Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5ebbd0352502dadf2cee-d17f93c3d746d59957a9",
+          "file": "accessibility/channels/account_settings_sidebar.spec.ts",
+          "line": 6,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "accessibility/channels/intro_channel.spec.ts",
+      "file": "accessibility/channels/intro_channel.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Base channel accessibility",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "fixme",
+                  "location": {
+                    "file": "/mattermost/e2e-tests/playwright/specs/accessibility/channels/intro_channel.spec.ts",
+                    "line": 6,
+                    "column": 6
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 0,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:43:41.127Z",
+                  "annotations": [
+                    {
+                      "type": "fixme",
+                      "location": {
+                        "file": "/mattermost/e2e-tests/playwright/specs/accessibility/channels/intro_channel.spec.ts",
+                        "line": 6,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "866d4e14fe51762acbd7-fa782dfd27c49eac228f",
+          "file": "accessibility/channels/intro_channel.spec.ts",
+          "line": 6,
+          "column": 6
+        },
+        {
+          "title": "Post actions tab support",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4485,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:43:41.127Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "866d4e14fe51762acbd7-811e7322d06b012918b1",
+          "file": "accessibility/channels/intro_channel.spec.ts",
+          "line": 26,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "accessibility/channels/settings_dialog/advanced.spec.ts",
+      "file": "accessibility/channels/settings_dialog/advanced.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "navigate on keyboard tab between interactive elements",
+          "ok": true,
+          "tags": ["accessibility", "settings", "advanced_settings"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3645,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:43:45.632Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "293028b4db0039051969-b7085a8385722320ca50",
+          "file": "accessibility/channels/settings_dialog/advanced.spec.ts",
+          "line": 9,
+          "column": 5
+        },
+        {
+          "title": "accessibility scan and aria-snapshot of Advanced settings panel",
+          "ok": true,
+          "tags": ["accessibility", "settings", "advanced_settings", "snapshots"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4070,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:43:49.288Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "293028b4db0039051969-f47b2754cd667ca984fd",
+          "file": "accessibility/channels/settings_dialog/advanced.spec.ts",
+          "line": 69,
+          "column": 5
+        },
+        {
+          "title": "accessibility scan and aria-snapshot of Send Messages on CTRL+ENTER section",
+          "ok": true,
+          "tags": ["accessibility", "settings", "advanced_settings", "snapshots"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4121,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:43:53.370Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "293028b4db0039051969-8b07900c3e00af81fed7",
+          "file": "accessibility/channels/settings_dialog/advanced.spec.ts",
+          "line": 133,
+          "column": 5
+        },
+        {
+          "title": "accessibility scan and aria-snapshot of Enable Post Formatting section",
+          "ok": true,
+          "tags": ["accessibility", "settings", "advanced_settings", "snapshots"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3762,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:43:57.504Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "293028b4db0039051969-a867f3dbb2bc0d557d3c",
+          "file": "accessibility/channels/settings_dialog/advanced.spec.ts",
+          "line": 193,
+          "column": 5
+        },
+        {
+          "title": "accessibility scan and aria-snapshot of Enable Join/Leave Messages section",
+          "ok": true,
+          "tags": ["accessibility", "settings", "advanced_settings", "snapshots"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3749,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:44:01.276Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "293028b4db0039051969-87b5058f8b318fd50656",
+          "file": "accessibility/channels/settings_dialog/advanced.spec.ts",
+          "line": 248,
+          "column": 5
+        },
+        {
+          "title": "accessibility scan and aria-snapshot of Scroll position section",
+          "ok": true,
+          "tags": ["accessibility", "settings", "advanced_settings", "snapshots"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3758,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:44:05.035Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "293028b4db0039051969-ea3163d12395376e691c",
+          "file": "accessibility/channels/settings_dialog/advanced.spec.ts",
+          "line": 306,
+          "column": 5
+        },
+        {
+          "title": "accessibility scan and aria-snapshot of Allow message drafts to sync section",
+          "ok": true,
+          "tags": ["accessibility", "settings", "advanced_settings", "snapshots"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3749,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:44:08.803Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "293028b4db0039051969-6b4a1070c55952a2d66e",
+          "file": "accessibility/channels/settings_dialog/advanced.spec.ts",
+          "line": 364,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "accessibility/channels/settings_dialog/notifications.spec.ts",
+      "file": "accessibility/channels/settings_dialog/notifications.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "navigate on keyboard tab between interactive elements",
+          "ok": true,
+          "tags": ["accessibility", "settings", "notification_settings"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3132,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:44:12.568Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2b068f0cd7a99ee756a1-50c6a8e5d0b09ddd81f4",
+          "file": "accessibility/channels/settings_dialog/notifications.spec.ts",
+          "line": 6,
+          "column": 5
+        },
+        {
+          "title": "accessibility scan and aria-snapshot of Notifications settings panel",
+          "ok": true,
+          "tags": ["accessibility", "settings", "notification_settings", "snapshots"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3444,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:44:15.718Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2b068f0cd7a99ee756a1-fed45e743a9a0852303e",
+          "file": "accessibility/channels/settings_dialog/notifications.spec.ts",
+          "line": 73,
+          "column": 5
+        },
+        {
+          "title": "accessibility scan and aria-snapshot of Desktop and mobile notifications section",
+          "ok": true,
+          "tags": ["accessibility", "settings", "notification_settings", "snapshots"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3775,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:44:19.171Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2b068f0cd7a99ee756a1-34fce3ffe55e0607a4fa",
+          "file": "accessibility/channels/settings_dialog/notifications.spec.ts",
+          "line": 135,
+          "column": 5
+        },
+        {
+          "title": "accessibility scan and aria-snapshot of Desktop notification sounds section",
+          "ok": true,
+          "tags": ["accessibility", "settings", "notification_settings", "snapshots"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3778,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:44:22.956Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2b068f0cd7a99ee756a1-484fefd851578c0aa4fb",
+          "file": "accessibility/channels/settings_dialog/notifications.spec.ts",
+          "line": 180,
+          "column": 5
+        },
+        {
+          "title": "accessibility scan and aria-snapshot of Email notifications section",
+          "ok": true,
+          "tags": ["accessibility", "settings", "notification_settings", "snapshots"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3660,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:44:26.744Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2b068f0cd7a99ee756a1-f96a7ea0b554c78bb22a",
+          "file": "accessibility/channels/settings_dialog/notifications.spec.ts",
+          "line": 225,
+          "column": 5
+        },
+        {
+          "title": "accessibility scan and aria-snapshot of Keywords that trigger notifications section",
+          "ok": true,
+          "tags": ["accessibility", "settings", "notification_settings", "snapshots"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3805,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:44:30.413Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2b068f0cd7a99ee756a1-009d8559fcba62f65236",
+          "file": "accessibility/channels/settings_dialog/notifications.spec.ts",
+          "line": 270,
+          "column": 5
+        },
+        {
+          "title": "accessibility scan and aria-snapshot of Keywords that get highlighted (without notifications) section",
+          "ok": true,
+          "tags": ["accessibility", "settings", "notification_settings", "snapshots"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3703,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:44:34.229Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2b068f0cd7a99ee756a1-46ab7c38f1999047add5",
+          "file": "accessibility/channels/settings_dialog/notifications.spec.ts",
+          "line": 331,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "accessibility/channels/settings_dialog/settings.spec.ts",
+      "file": "accessibility/channels/settings_dialog/settings.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "manages focus when opening and closing settings modal with keyboard",
+          "ok": true,
+          "tags": ["accessibility", "settings"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3897,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:44:37.945Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c27dc2d4fd7579bfae82-057d1be3e3ad81ea8f0b",
+          "file": "accessibility/channels/settings_dialog/settings.spec.ts",
+          "line": 9,
+          "column": 5
+        },
+        {
+          "title": "navigates between settings tabs using arrow keys",
+          "ok": true,
+          "tags": ["accessibility", "settings"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3073,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:44:41.850Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c27dc2d4fd7579bfae82-7274c1c425ca6d4b41ac",
+          "file": "accessibility/channels/settings_dialog/settings.spec.ts",
+          "line": 56,
+          "column": 5
+        },
+        {
+          "title": "passes accessibility scan on notifications settings panel",
+          "ok": true,
+          "tags": ["accessibility", "settings"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3386,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:44:44.932Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c27dc2d4fd7579bfae82-5823d9bb7b6d4aab963f",
+          "file": "accessibility/channels/settings_dialog/settings.spec.ts",
+          "line": 115,
+          "column": 5
+        },
+        {
+          "title": "passes accessibility scan on display settings panel",
+          "ok": true,
+          "tags": ["accessibility", "settings"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3764,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:44:48.327Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c27dc2d4fd7579bfae82-63b9816c00f99df314cd",
+          "file": "accessibility/channels/settings_dialog/settings.spec.ts",
+          "line": 159,
+          "column": 5
+        },
+        {
+          "title": "passes accessibility scan on sidebar settings panel",
+          "ok": true,
+          "tags": ["accessibility", "settings"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3634,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:44:52.101Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c27dc2d4fd7579bfae82-f5d98c0a9f7152a27341",
+          "file": "accessibility/channels/settings_dialog/settings.spec.ts",
+          "line": 208,
+          "column": 5
+        },
+        {
+          "title": "passes accessibility scan on advanced settings panel",
+          "ok": true,
+          "tags": ["accessibility", "settings"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3747,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:44:55.746Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c27dc2d4fd7579bfae82-7af2e6a53b9297c10893",
+          "file": "accessibility/channels/settings_dialog/settings.spec.ts",
+          "line": 257,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "accessibility/channels/settings_dialog/sidebar.spec.ts",
+      "file": "accessibility/channels/settings_dialog/sidebar.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "navigate on keyboard tab between interactive elements",
+          "ok": true,
+          "tags": ["accessibility", "settings", "sidebar_settings"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3094,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:44:59.505Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "44f6b4841a0e0573e1f3-0350ab0b64c32bdd7945",
+          "file": "accessibility/channels/settings_dialog/sidebar.spec.ts",
+          "line": 9,
+          "column": 5
+        },
+        {
+          "title": "accessibility scan and aria-snapshot of Sidebar settings panel",
+          "ok": true,
+          "tags": ["accessibility", "settings", "sidebar_settings", "snapshots"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3658,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:02.607Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "44f6b4841a0e0573e1f3-5c34965460d814dae9d3",
+          "file": "accessibility/channels/settings_dialog/sidebar.spec.ts",
+          "line": 63,
+          "column": 5
+        },
+        {
+          "title": "accessibility scan and aria-snapshot of Group unread channels separately section",
+          "ok": true,
+          "tags": ["accessibility", "settings", "sidebar_settings", "snapshots"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3792,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:06.275Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "44f6b4841a0e0573e1f3-a48b1402d4e62ddfcdd4",
+          "file": "accessibility/channels/settings_dialog/sidebar.spec.ts",
+          "line": 115,
+          "column": 5
+        },
+        {
+          "title": "accessibility scan and aria-snapshot of Number of direct messages to show section",
+          "ok": true,
+          "tags": ["accessibility", "settings", "sidebar_settings", "snapshots"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3774,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:10.077Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "44f6b4841a0e0573e1f3-6dfcef3b1a22ade175e3",
+          "file": "accessibility/channels/settings_dialog/sidebar.spec.ts",
+          "line": 163,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "accessibility/channels/team_menu.spec.ts",
+      "file": "accessibility/channels/team_menu.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "navigate using arrow keys between menu items",
+          "ok": true,
+          "tags": ["accessibility", "team_menu", "keyboard_navigation"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2939,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Currently focused element: {\n  selector: \u001b[32m'tag: li | id: (none) | class: .sc-pqjAT.ASImy.MuiButtonBase-root.MuiMenuItem-root.MuiMenuItem-gutters.Mui-focusVisible.sc-jrkPvW.iwcRGm.sc-kDnyiN.gIorqe'\u001b[39m,\n  role: \u001b[32m'menuitem'\u001b[39m,\n  ariaLabel: \u001b[32m''\u001b[39m,\n  text: \u001b[32m'Invite peopleAdd or invite people to the team'\u001b[39m,\n  nodeName: \u001b[32m'LI'\u001b[39m,\n  isVisible: \u001b[33mtrue\u001b[39m\n}\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:13.866Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "49a6cb6265a914d9c574-622fc96f575c5a159020",
+          "file": "accessibility/channels/team_menu.spec.ts",
+          "line": 9,
+          "column": 5
+        },
+        {
+          "title": "navigate using Tab key to escape menu",
+          "ok": true,
+          "tags": ["accessibility", "team_menu", "keyboard_navigation"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3001,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:16.816Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "49a6cb6265a914d9c574-0e7210573444d3e4bb92",
+          "file": "accessibility/channels/team_menu.spec.ts",
+          "line": 61,
+          "column": 5
+        },
+        {
+          "title": "activate menu items using Enter and Space keys",
+          "ok": true,
+          "tags": ["accessibility", "team_menu", "keyboard_navigation"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3745,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:19.826Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "49a6cb6265a914d9c574-5b1aefd8ebe84e055dec",
+          "file": "accessibility/channels/team_menu.spec.ts",
+          "line": 98,
+          "column": 5
+        },
+        {
+          "title": "close menu using Escape key",
+          "ok": true,
+          "tags": ["accessibility", "team_menu", "keyboard_navigation"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2954,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:23.581Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "49a6cb6265a914d9c574-380526a218e28b1b026a",
+          "file": "accessibility/channels/team_menu.spec.ts",
+          "line": 152,
+          "column": 5
+        },
+        {
+          "title": "accessibility scan and aria-snapshot of team menu",
+          "ok": true,
+          "tags": ["accessibility", "team_menu", "snapshots"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3314,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:26.544Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "49a6cb6265a914d9c574-424471e8bf90d65e8656",
+          "file": "accessibility/channels/team_menu.spec.ts",
+          "line": 182,
+          "column": 5
+        },
+        {
+          "title": "verify ARIA attributes and screen reader support",
+          "ok": true,
+          "tags": ["accessibility", "team_menu", "screen_reader"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2894,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:29.867Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "49a6cb6265a914d9c574-456109e32a64f7c2a2ee",
+          "file": "accessibility/channels/team_menu.spec.ts",
+          "line": 222,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "accessibility/channels/theme_settings.spec.ts",
+      "file": "accessibility/channels/theme_settings.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Theme settings should be keyboard accessible",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6583,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:32.776Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3d228b85231dccc06b60-86248dbef8a5e0a01db0",
+          "file": "accessibility/channels/theme_settings.spec.ts",
+          "line": 6,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "accessibility/common/login.spec.ts",
+      "file": "accessibility/common/login.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "/login accessibility quick check",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2608,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:39.370Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "12db755975ef031e2338-35bc56d27da1d59231e5",
+          "file": "accessibility/common/login.spec.ts",
+          "line": 6,
+          "column": 5
+        },
+        {
+          "title": "/login accessibility tab support",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2231,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:41.987Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "12db755975ef031e2338-4bba4f7a47800c0e651c",
+          "file": "accessibility/common/login.spec.ts",
+          "line": 21,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "accessibility/common/reset_password.spec.ts",
+      "file": "accessibility/common/reset_password.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "/reset_password accessibility quick check",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2410,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:44.232Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8629604ac2daad9d70ec-af05e4fee33a70eb99ef",
+          "file": "accessibility/common/reset_password.spec.ts",
+          "line": 6,
+          "column": 5
+        },
+        {
+          "title": "/reset_password accessibility tab support",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2063,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:46.653Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8629604ac2daad9d70ec-452382b9a36b5ffd691f",
+          "file": "accessibility/common/reset_password.spec.ts",
+          "line": 23,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "accessibility/common/signup_user_complete.spec.ts",
+      "file": "accessibility/common/signup_user_complete.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "/signup_user_complete accessibility quick check",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3141,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:48.728Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "08997d4fdde0e7971d4a-11fd4a1a74e0ed126f2c",
+          "file": "accessibility/common/signup_user_complete.spec.ts",
+          "line": 6,
+          "column": 5
+        },
+        {
+          "title": "/signup_user_complete accessibility tab support",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2907,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:51.880Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "08997d4fdde0e7971d4a-5014afd39373ce6d9680",
+          "file": "accessibility/common/signup_user_complete.spec.ts",
+          "line": 23,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "client/upload_file.spec.ts",
+      "file": "client/upload_file.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "should succeed with File",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 669,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:54.836Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4d98064ec4772bbed9e6-233ca1c94807d0731bfd",
+          "file": "client/upload_file.spec.ts",
+          "line": 28,
+          "column": 5
+        },
+        {
+          "title": "should succeed with Blob",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 708,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:55.517Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4d98064ec4772bbed9e6-a554b7250a519663ddf2",
+          "file": "client/upload_file.spec.ts",
+          "line": 41,
+          "column": 5
+        },
+        {
+          "title": "should succeed even with channel_id only",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 694,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:56.236Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4d98064ec4772bbed9e6-1f31029b8901c74f4321",
+          "file": "client/upload_file.spec.ts",
+          "line": 54,
+          "column": 5
+        },
+        {
+          "title": "should fail on invalid channel ID",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 661,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:56.942Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4d98064ec4772bbed9e6-3c7bf588be8a966e778b",
+          "file": "client/upload_file.spec.ts",
+          "line": 71,
+          "column": 5
+        },
+        {
+          "title": "should fail on missing files",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 644,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:57.617Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4d98064ec4772bbed9e6-643cdd282a0760bcee23",
+          "file": "client/upload_file.spec.ts",
+          "line": 94,
+          "column": 5
+        },
+        {
+          "title": "should fail on incorrect order setting up FormData",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 735,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:58.271Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4d98064ec4772bbed9e6-a23a2a2979b8b675c6d2",
+          "file": "client/upload_file.spec.ts",
+          "line": 107,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/account_settings/profile/popover_fields.spec.ts",
+      "file": "functional/channels/account_settings/profile/popover_fields.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Profile popover should show correct fields after at-mention autocomplete @user_profile",
+          "ok": true,
+          "tags": ["user_profile"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4299,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:45:59.020Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cf1062d26fe49302562f-05408880c69f4d7639b6",
+          "file": "functional/channels/account_settings/profile/popover_fields.spec.ts",
+          "line": 14,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/center_view/page_up_down_scroll.spec.ts",
+      "file": "functional/channels/center_view/page_up_down_scroll.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "should be able to scroll the post list with page up and down",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6095,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:46:03.332Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "675108e3319a46adedab-3be67e6066ecf9603408",
+          "file": "functional/channels/center_view/page_up_down_scroll.spec.ts",
+          "line": 8,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/channel_banner/channel_banner.spec.ts",
+      "file": "functional/channels/channel_banner/channel_banner.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Should show channel banner when configured",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Skipping test - server does not have Enterprise Advanced license",
+                  "location": {
+                    "file": "/mattermost/e2e-tests/playwright/specs/functional/channels/channel_banner/channel_banner.spec.ts",
+                    "line": 10,
+                    "column": 10
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 619,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:46:09.438Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Skipping test - server does not have Enterprise Advanced license",
+                      "location": {
+                        "file": "/mattermost/e2e-tests/playwright/specs/functional/channels/channel_banner/channel_banner.spec.ts",
+                        "line": 10,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "86e0cdc5ce06596e18d1-585076c187f1c13e5d0f",
+          "file": "functional/channels/channel_banner/channel_banner.spec.ts",
+          "line": 7,
+          "column": 5
+        },
+        {
+          "title": "Should render markdown",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Skipping test - server does not have Enterprise Advanced license",
+                  "location": {
+                    "file": "/mattermost/e2e-tests/playwright/specs/functional/channels/channel_banner/channel_banner.spec.ts",
+                    "line": 55,
+                    "column": 10
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 636,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:46:10.066Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Skipping test - server does not have Enterprise Advanced license",
+                      "location": {
+                        "file": "/mattermost/e2e-tests/playwright/specs/functional/channels/channel_banner/channel_banner.spec.ts",
+                        "line": 55,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "86e0cdc5ce06596e18d1-915058e8cf385da9ccb1",
+          "file": "functional/channels/channel_banner/channel_banner.spec.ts",
+          "line": 52,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/custom_profile_attributes/custom_attributes.spec.ts",
+      "file": "functional/channels/custom_profile_attributes/custom_attributes.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-T5773 Display custom profile attributes in profile popover @custom_profile_attributes",
+          "ok": true,
+          "tags": ["custom_profile_attributes"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5213,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:46:10.718Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b9e76eccea2509ff085d-3be7ee66440e562491de",
+          "file": "functional/channels/custom_profile_attributes/custom_attributes.spec.ts",
+          "line": 122,
+          "column": 5
+        },
+        {
+          "title": "MM-T5774 Do not display custom profile attributes if none exist @custom_profile_attributes",
+          "ok": true,
+          "tags": ["custom_profile_attributes"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5217,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:46:15.944Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b9e76eccea2509ff085d-49038f3dcbc5199081cb",
+          "file": "functional/channels/custom_profile_attributes/custom_attributes.spec.ts",
+          "line": 152,
+          "column": 5
+        },
+        {
+          "title": "MM-T5775 Update custom profile attributes when changed @custom_profile_attributes",
+          "ok": true,
+          "tags": ["custom_profile_attributes"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5767,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:46:21.173Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b9e76eccea2509ff085d-051425c77038aa9cee8a",
+          "file": "functional/channels/custom_profile_attributes/custom_attributes.spec.ts",
+          "line": 180,
+          "column": 5
+        },
+        {
+          "title": "MM-T5776 Hide custom profile attributes when visibility is set to hidden @custom_profile_attributes",
+          "ok": true,
+          "tags": ["custom_profile_attributes"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5289,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:46:26.951Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b9e76eccea2509ff085d-fcefdcc29577fa758962",
+          "file": "functional/channels/custom_profile_attributes/custom_attributes.spec.ts",
+          "line": 241,
+          "column": 5
+        },
+        {
+          "title": "MM-T5777 Always display custom profile attributes with visibility set to always @custom_profile_attributes",
+          "ok": true,
+          "tags": ["custom_profile_attributes"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5512,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:46:32.252Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b9e76eccea2509ff085d-6450bbe646dbcf8fcc2d",
+          "file": "functional/channels/custom_profile_attributes/custom_attributes.spec.ts",
+          "line": 275,
+          "column": 5
+        },
+        {
+          "title": "MM-T5778 Display phone and URL type custom profile attributes correctly @custom_profile_attributes",
+          "ok": true,
+          "tags": ["custom_profile_attributes"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5588,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:46:37.775Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b9e76eccea2509ff085d-9e602c4a7640ced276b0",
+          "file": "functional/channels/custom_profile_attributes/custom_attributes.spec.ts",
+          "line": 315,
+          "column": 5
+        },
+        {
+          "title": "MM-T5779 Verify phone and URL attributes are clickable in profile popover @custom_profile_attributes",
+          "ok": true,
+          "tags": ["custom_profile_attributes"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5273,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:46:43.376Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b9e76eccea2509ff085d-a882855b143d56b9ccd1",
+          "file": "functional/channels/custom_profile_attributes/custom_attributes.spec.ts",
+          "line": 346,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/custom_profile_attributes/user_settings.spec.ts",
+      "file": "functional/channels/custom_profile_attributes/user_settings.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-T5768 Editing Custom Profile Attributes @custom_profile_attributes",
+          "ok": true,
+          "tags": ["custom_profile_attributes"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11860,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:46:48.739Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8e4ddb09799c6360a5ec-53b7ed23d267fe50ac97",
+          "file": "functional/channels/custom_profile_attributes/user_settings.spec.ts",
+          "line": 141,
+          "column": 5
+        },
+        {
+          "title": "MM-T5769 Clearing Custom Profile Attributes @custom_profile_attributes",
+          "ok": true,
+          "tags": ["custom_profile_attributes"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8766,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:47:00.624Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8e4ddb09799c6360a5ec-128cf4e36ba478a30998",
+          "file": "functional/channels/custom_profile_attributes/user_settings.spec.ts",
+          "line": 193,
+          "column": 5
+        },
+        {
+          "title": "MM-T5770 Cancelling Changes to Custom Profile Attributes @custom_profile_attributes",
+          "ok": true,
+          "tags": ["custom_profile_attributes"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5978,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:47:09.409Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8e4ddb09799c6360a5ec-b1348cbd2973a9c97db0",
+          "file": "functional/channels/custom_profile_attributes/user_settings.spec.ts",
+          "line": 239,
+          "column": 5
+        },
+        {
+          "title": "MM-T5771 Editing Phone and URL Type Custom Profile Attributes @custom_profile_attributes",
+          "ok": true,
+          "tags": ["custom_profile_attributes"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9508,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:47:15.407Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8e4ddb09799c6360a5ec-cebb5fcedc409d2c4db7",
+          "file": "functional/channels/custom_profile_attributes/user_settings.spec.ts",
+          "line": 282,
+          "column": 5
+        },
+        {
+          "title": "MM-T5772 URL Validation in Custom Profile Attributes @custom_profile_attributes",
+          "ok": true,
+          "tags": ["custom_profile_attributes"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5944,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:47:24.934Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8e4ddb09799c6360a5ec-21466d6be00c9b4b41a6",
+          "file": "functional/channels/custom_profile_attributes/user_settings.spec.ts",
+          "line": 332,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/drafts/drafts_on_deleted_message.spec.ts",
+      "file": "functional/channels/drafts/drafts_on_deleted_message.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-T5435_1 Global Drafts link in sidebar should be hidden when another user deleted root post and user removes the deleted post ",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4178,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:47:31.122Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d6ce387286b2b211c328-aa068d84653750a8da23",
+          "file": "functional/channels/drafts/drafts_on_deleted_message.spec.ts",
+          "line": 6,
+          "column": 5
+        },
+        {
+          "title": "MM-T5435_2 Global Drafts link in sidebar should be hidden when user deletes root post ",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5127,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:47:35.351Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d6ce387286b2b211c328-34ae2af80a211767bb61",
+          "file": "functional/channels/drafts/drafts_on_deleted_message.spec.ts",
+          "line": 78,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/edit_file_attachments/edit_file_attachment.spec.ts",
+      "file": "functional/channels/edit_file_attachments/edit_file_attachment.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-T5654_1 should be able to add attachments while editing a post",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4183,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:47:40.498Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7547dd2e96843c8845a4-a8288c8a1ae31385d375",
+          "file": "functional/channels/edit_file_attachments/edit_file_attachment.spec.ts",
+          "line": 8,
+          "column": 5
+        },
+        {
+          "title": "MM-T5654_2 should be able to add attachments while editing a threaded post",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9223,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:47:44.698Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7547dd2e96843c8845a4-9f3d46fe48e373b66f0e",
+          "file": "functional/channels/edit_file_attachments/edit_file_attachment.spec.ts",
+          "line": 36,
+          "column": 5
+        },
+        {
+          "title": "MM-T5654_3 should be able to edit post message originally containing files",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4274,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:47:53.939Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7547dd2e96843c8845a4-0d2b146f869835ac03df",
+          "file": "functional/channels/edit_file_attachments/edit_file_attachment.spec.ts",
+          "line": 114,
+          "column": 5
+        },
+        {
+          "title": "MM-T5654_4 should be able to add files when editing a post",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5265,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:47:58.227Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7547dd2e96843c8845a4-dec18315fbaad60476e9",
+          "file": "functional/channels/edit_file_attachments/edit_file_attachment.spec.ts",
+          "line": 142,
+          "column": 5
+        },
+        {
+          "title": "MM-5654_5 should be able to remove attachments while editing a post",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4395,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:48:03.509Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7547dd2e96843c8845a4-6eed59a5847c74a2d980",
+          "file": "functional/channels/edit_file_attachments/edit_file_attachment.spec.ts",
+          "line": 187,
+          "column": 5
+        },
+        {
+          "title": "MM-T5655_1 removing message content and files should delete the post",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5127,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:48:07.919Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7547dd2e96843c8845a4-e1f522be164a893ed785",
+          "file": "functional/channels/edit_file_attachments/edit_file_attachment.spec.ts",
+          "line": 223,
+          "column": 5
+        },
+        {
+          "title": "MM-T5655_2 should be able to remove all files when editing a post",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4552,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:48:13.061Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7547dd2e96843c8845a4-a3314f49a572207ff3e5",
+          "file": "functional/channels/edit_file_attachments/edit_file_attachment.spec.ts",
+          "line": 257,
+          "column": 5
+        },
+        {
+          "title": "MM-T5656_1 should be able to restore previously edited post version that contains attachments",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5265,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:48:17.628Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7547dd2e96843c8845a4-87a84a9147ef9e56e5ef",
+          "file": "functional/channels/edit_file_attachments/edit_file_attachment.spec.ts",
+          "line": 295,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/gif_picker/gif_picker_search.spec.ts",
+      "file": "functional/channels/gif_picker/gif_picker_search.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-T5445 searches for GIF from center textbox and posts selected GIF correctly",
+          "ok": true,
+          "tags": ["gif_picker"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "fixme",
+                  "location": {
+                    "file": "/mattermost/e2e-tests/playwright/specs/functional/channels/gif_picker/gif_picker_search.spec.ts",
+                    "line": 9,
+                    "column": 6
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": -1,
+                  "parallelIndex": -1,
+                  "status": "skipped",
+                  "duration": 0,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:48:22.908Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "e58a4d76c8a8c28a64b7-64077427439549179d0d",
+          "file": "functional/channels/gif_picker/gif_picker_search.spec.ts",
+          "line": 9,
+          "column": 6
+        },
+        {
+          "title": "MM-T5446 searches for GIF from RHS textbox and posts selected GIF correctly in thread",
+          "ok": true,
+          "tags": ["gif_picker"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "fixme",
+                  "location": {
+                    "file": "/mattermost/e2e-tests/playwright/specs/functional/channels/gif_picker/gif_picker_search.spec.ts",
+                    "line": 53,
+                    "column": 6
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": -1,
+                  "parallelIndex": -1,
+                  "status": "skipped",
+                  "duration": 0,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:48:22.909Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "e58a4d76c8a8c28a64b7-fe522ba2343058bf7597",
+          "file": "functional/channels/gif_picker/gif_picker_search.spec.ts",
+          "line": 53,
+          "column": 6
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/mentions/multiple_mentions.spec.ts",
+      "file": "functional/channels/mentions/multiple_mentions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "displays multiple mentions correctly in Recent Mentions panel",
+          "ok": true,
+          "tags": ["mentions"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4418,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:48:22.910Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "710d78f46603deb54a27-abc8db33a569996faced",
+          "file": "functional/channels/mentions/multiple_mentions.spec.ts",
+          "line": 12,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/message_priority/standard_priority.spec.ts",
+      "file": "functional/channels/message_priority/standard_priority.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-T5139 posts message with standard priority and verifies no priority labels appear",
+          "ok": true,
+          "tags": ["message_priority"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3664,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:48:27.346Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6b0e5fcc07734db3240e-29183c82095f2f97ef02",
+          "file": "functional/channels/message_priority/standard_priority.spec.ts",
+          "line": 9,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/notifications/notification.spec.ts",
+      "file": "functional/channels/notifications/notification.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-T483 triggers notification with uppercase channel-wide mention and highlights message for all users",
+          "ok": true,
+          "tags": ["notifications"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Works across browsers and devices, except in headless mode, where stubbing the Notification API is supported only in Firefox and WebKit.",
+                  "location": {
+                    "file": "/mattermost/e2e-tests/playwright/specs/functional/channels/notifications/notification.spec.ts",
+                    "line": 17,
+                    "column": 14
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 105,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:48:31.028Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Works across browsers and devices, except in headless mode, where stubbing the Notification API is supported only in Firefox and WebKit.",
+                      "location": {
+                        "file": "/mattermost/e2e-tests/playwright/specs/functional/channels/notifications/notification.spec.ts",
+                        "line": 17,
+                        "column": 14
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "98fb4935cb0c7e7730f8-6bcce2a318a536239d13",
+          "file": "functional/channels/notifications/notification.spec.ts",
+          "line": 13,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/scheduled_messages/scheduled_messages.spec.ts",
+      "file": "functional/channels/scheduled_messages/scheduled_messages.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-T5643_1 creates scheduled message from channel and posts at scheduled time",
+          "ok": true,
+          "tags": ["scheduled_messages"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "fixme",
+                  "location": {
+                    "file": "/mattermost/e2e-tests/playwright/specs/functional/channels/scheduled_messages/scheduled_messages.spec.ts",
+                    "line": 19,
+                    "column": 6
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 0,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:48:31.157Z",
+                  "annotations": [
+                    {
+                      "type": "fixme",
+                      "location": {
+                        "file": "/mattermost/e2e-tests/playwright/specs/functional/channels/scheduled_messages/scheduled_messages.spec.ts",
+                        "line": 19,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "6f9eebac726fb92802a5-a5b5d611bebaf3d0246a",
+          "file": "functional/channels/scheduled_messages/scheduled_messages.spec.ts",
+          "line": 19,
+          "column": 6
+        },
+        {
+          "title": "MM-T5643_6 creates scheduled message in thread and posts in thread conversation",
+          "ok": true,
+          "tags": ["scheduled_messages"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8252,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:48:31.157Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6f9eebac726fb92802a5-e357349f5db90f8eff6a",
+          "file": "functional/channels/scheduled_messages/scheduled_messages.spec.ts",
+          "line": 77,
+          "column": 5
+        },
+        {
+          "title": "MM-T5644_2 reschedules message to a future date from scheduled posts page",
+          "ok": true,
+          "tags": ["scheduled_messages"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10219,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:48:39.426Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6f9eebac726fb92802a5-f61dc8e94179d91de231",
+          "file": "functional/channels/scheduled_messages/scheduled_messages.spec.ts",
+          "line": 137,
+          "column": 5
+        },
+        {
+          "title": "MM-T5645 deletes scheduled message from scheduled posts page and removes all indicators",
+          "ok": true,
+          "tags": ["scheduled_messages"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7331,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:48:49.663Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6f9eebac726fb92802a5-7efa44ed85e7eb499050",
+          "file": "functional/channels/scheduled_messages/scheduled_messages.spec.ts",
+          "line": 191,
+          "column": 5
+        },
+        {
+          "title": "MM-T5643_9 sends scheduled message immediately from scheduled posts page",
+          "ok": true,
+          "tags": ["scheduled_messages"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7431,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:48:57.013Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6f9eebac726fb92802a5-7c78a04f2941ff4133cc",
+          "file": "functional/channels/scheduled_messages/scheduled_messages.spec.ts",
+          "line": 241,
+          "column": 5
+        },
+        {
+          "title": "MM-T5643_3 creates scheduled message from DM channel and posts at scheduled time",
+          "ok": true,
+          "tags": ["scheduled_messages"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7736,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:49:04.461Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6f9eebac726fb92802a5-846d91cb69ecad0baf4c",
+          "file": "functional/channels/scheduled_messages/scheduled_messages.spec.ts",
+          "line": 295,
+          "column": 5
+        },
+        {
+          "title": "MM-T5648 converts draft message to scheduled message from drafts page",
+          "ok": true,
+          "tags": ["scheduled_messages"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7498,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:49:12.214Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6f9eebac726fb92802a5-74bcbb27f84df2bb48ae",
+          "file": "functional/channels/scheduled_messages/scheduled_messages.spec.ts",
+          "line": 369,
+          "column": 5
+        },
+        {
+          "title": "MM-T5644_1 edits scheduled message content while preserving scheduled time",
+          "ok": true,
+          "tags": ["scheduled_messages"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7719,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:49:19.728Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6f9eebac726fb92802a5-5508f1286fba0c106864",
+          "file": "functional/channels/scheduled_messages/scheduled_messages.spec.ts",
+          "line": 415,
+          "column": 5
+        },
+        {
+          "title": "MM-T5650 copies scheduled message text to clipboard for reuse",
+          "ok": true,
+          "tags": ["scheduled_messages"],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6958,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:49:27.465Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6f9eebac726fb92802a5-3cbf0f1a23f36ea734d4",
+          "file": "functional/channels/scheduled_messages/scheduled_messages.spec.ts",
+          "line": 485,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/search/find_channels.spec.ts",
+      "file": "functional/channels/search/find_channels.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-T5424 Find channel search returns only 50 results when there are more than 50 channels with similar names",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4632,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:49:34.443Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0a161b3f74e64a18bcf7-9ad4244244f95315ec3f",
+          "file": "functional/channels/search/find_channels.spec.ts",
+          "line": 6,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/search/search_box_clear_button.spec.ts",
+      "file": "functional/channels/search/search_box_clear_button.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-64155 search box clear button should not leave type badge after closing the search box",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3296,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:49:39.092Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7750cf8c63229dfa8770-934ec50f4dd026255316",
+          "file": "functional/channels/search/search_box_clear_button.spec.ts",
+          "line": 6,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/search/search_box_suggestions.spec.ts",
+      "file": "functional/channels/search/search_box_suggestions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Search box suggestion must be case insensitive",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3656,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:49:42.406Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b5b2a0a2cc98862d1fe9-5e49d539efe0b01b990c",
+          "file": "functional/channels/search/search_box_suggestions.spec.ts",
+          "line": 6,
+          "column": 5
+        },
+        {
+          "title": "remove extra whitespace when selecting a user",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3269,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:49:46.077Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b5b2a0a2cc98862d1fe9-94248f954ea8b60f7b90",
+          "file": "functional/channels/search/search_box_suggestions.spec.ts",
+          "line": 61,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/search/team_selector.spec.ts",
+      "file": "functional/channels/search/team_selector.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "team selector should not be visible if user belongs to only one team",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3144,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:49:49.363Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b0dfa249578ecb93e16c-71ff5645ff061d38b3a3",
+          "file": "functional/channels/search/team_selector.spec.ts",
+          "line": 6,
+          "column": 5
+        },
+        {
+          "title": "team selector should be visible if user belongs to multiple teams",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3425,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:49:52.524Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b0dfa249578ecb93e16c-81c738e651d7bfd0004c",
+          "file": "functional/channels/search/team_selector.spec.ts",
+          "line": 54,
+          "column": 5
+        },
+        {
+          "title": "team selector should show filter input with more than 4 teams",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3420,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:49:55.964Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b0dfa249578ecb93e16c-62a65858bf5b66d8f4ef",
+          "file": "functional/channels/search/team_selector.spec.ts",
+          "line": 127,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/settings/notifications/highlight_without_notification.spec.ts",
+      "file": "functional/channels/settings/notifications/highlight_without_notification.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-T5465-1 Should add the keyword when enter, comma or tab is pressed on the textbox",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4107,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:49:59.402Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b64ebf0ac597e9327881-85df32821cd2e37a6145",
+          "file": "functional/channels/settings/notifications/highlight_without_notification.spec.ts",
+          "line": 13,
+          "column": 5
+        },
+        {
+          "title": "MM-T5465-2 Should highlight the keywords when a message is sent with the keyword in center",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4596,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:50:03.525Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b64ebf0ac597e9327881-1a224478a81516570c76",
+          "file": "functional/channels/settings/notifications/highlight_without_notification.spec.ts",
+          "line": 65,
+          "column": 5
+        },
+        {
+          "title": "MM-T5465-3 Should highlight the keywords when a message is sent with the keyword in rhs",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5134,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:50:08.138Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b64ebf0ac597e9327881-3fee77fa16eb225d5d87",
+          "file": "functional/channels/settings/notifications/highlight_without_notification.spec.ts",
+          "line": 119,
+          "column": 5
+        },
+        {
+          "title": "MM-T5465-4 Highlighted keywords should not appear in the Recent Mentions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4398,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:50:13.290Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b64ebf0ac597e9327881-e339dce9fd1a2b8c52b9",
+          "file": "functional/channels/settings/notifications/highlight_without_notification.spec.ts",
+          "line": 175,
+          "column": 5
+        },
+        {
+          "title": "MM-T5465-5 Should highlight keywords in message sent from another user",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4475,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:50:17.706Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b64ebf0ac597e9327881-578354049bf96a44c6ea",
+          "file": "functional/channels/settings/notifications/highlight_without_notification.spec.ts",
+          "line": 216,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/sidebar_right/page_up_down_scroll.spec.ts",
+      "file": "functional/channels/sidebar_right/page_up_down_scroll.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "should be able to scroll the RHS with page up and down",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6916,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:50:22.200Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c32c661d8ae9ab03ded0-23c12c0122eede8cb2aa",
+          "file": "functional/channels/sidebar_right/page_up_down_scroll.spec.ts",
+          "line": 8,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/channels/threads/threads_list.spec.ts",
+      "file": "functional/channels/threads/threads_list.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Should be able to change threads with arrow keys",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6756,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:50:29.133Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "27a95973b7a899462a59-fbba1d74b0b98d0ff7ba",
+          "file": "functional/channels/threads/threads_list.spec.ts",
+          "line": 6,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/system_console/desktop_landing.spec.ts",
+      "file": "functional/system_console/desktop_landing.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-T5640_1 should not see landing page ",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1483,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:50:35.907Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8d33297929d0a718b85d-727b367e396938f77f92",
+          "file": "functional/system_console/desktop_landing.spec.ts",
+          "line": 23,
+          "column": 5
+        },
+        {
+          "title": "MM-T5640_2 should see landing page",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1868,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:50:37.408Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8d33297929d0a718b85d-321bb1d4534a5773a175",
+          "file": "functional/system_console/desktop_landing.spec.ts",
+          "line": 39,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/system_console/mobile_security.spec.ts",
+      "file": "functional/system_console/mobile_security.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "should be able to enable mobile security settings when licensed",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Skipping test - server has no enterprise or enterprise advanced license",
+                  "location": {
+                    "file": "/mattermost/e2e-tests/playwright/specs/functional/system_console/mobile_security.spec.ts",
+                    "line": 11,
+                    "column": 10
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 770,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:50:39.295Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Skipping test - server has no enterprise or enterprise advanced license",
+                      "location": {
+                        "file": "/mattermost/e2e-tests/playwright/specs/functional/system_console/mobile_security.spec.ts",
+                        "line": 11,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "a779e82696873fe8cb49-b7ad0946697028d08fc3",
+          "file": "functional/system_console/mobile_security.spec.ts",
+          "line": 6,
+          "column": 5
+        },
+        {
+          "title": "should show mobile security upsell when not licensed",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Skipping test - server has enterprise license",
+                  "location": {
+                    "file": "/mattermost/e2e-tests/playwright/specs/functional/system_console/mobile_security.spec.ts",
+                    "line": 165,
+                    "column": 10
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 831,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:50:40.082Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Skipping test - server has enterprise license",
+                      "location": {
+                        "file": "/mattermost/e2e-tests/playwright/specs/functional/system_console/mobile_security.spec.ts",
+                        "line": 165,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "a779e82696873fe8cb49-4639b9f189a421659217",
+          "file": "functional/system_console/mobile_security.spec.ts",
+          "line": 160,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/system_console/permissions/team_access.spec.ts",
+      "file": "functional/system_console/permissions/team_access.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-63378 System Manager without team access permissions cannot view team details",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 19958,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:50:40.933Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9b9ba07fc1f7371b4575-56415b7fa2c459dcec98",
+          "file": "functional/system_console/permissions/team_access.spec.ts",
+          "line": 82,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/system_console/system_users/actions.spec.ts",
+      "file": "functional/system_console/system_users/actions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-T5520-1 should activate and deactivate users",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6660,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:51:00.911Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2355b37b1fb57a88bc1e-f056a55031aed1bb79e9",
+          "file": "functional/system_console/system_users/actions.spec.ts",
+          "line": 45,
+          "column": 5
+        },
+        {
+          "title": "MM-T5520-2 should change user roles",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8315,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:51:07.588Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2355b37b1fb57a88bc1e-a9a405d06bd14afee69c",
+          "file": "functional/system_console/system_users/actions.spec.ts",
+          "line": 72,
+          "column": 5
+        },
+        {
+          "title": "MM-T5520-3 should be able to manage teams",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6272,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:51:15.920Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2355b37b1fb57a88bc1e-d9794a0f2d41a5afe309",
+          "file": "functional/system_console/system_users/actions.spec.ts",
+          "line": 113,
+          "column": 5
+        },
+        {
+          "title": "MM-T5520-4 should reset the users password",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6758,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:51:22.209Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2355b37b1fb57a88bc1e-4ef952b4a21596a1ee45",
+          "file": "functional/system_console/system_users/actions.spec.ts",
+          "line": 149,
+          "column": 5
+        },
+        {
+          "title": "MM-T5520-5 should change the users email",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6930,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:51:28.984Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2355b37b1fb57a88bc1e-7ac6b9989fda5682f372",
+          "file": "functional/system_console/system_users/actions.spec.ts",
+          "line": 166,
+          "column": 5
+        },
+        {
+          "title": "MM-T5520-6 should revoke sessions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6292,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:51:35.930Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2355b37b1fb57a88bc1e-a76e0f282dba0ffb4d72",
+          "file": "functional/system_console/system_users/actions.spec.ts",
+          "line": 189,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/system_console/system_users/column_sort.spec.ts",
+      "file": "functional/system_console/system_users/column_sort.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-T5523-1 Sortable columns should sort the list when clicked",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5726,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:51:42.243Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f5ab7458df1efd3cf824-b992b88121b44722ef7a",
+          "file": "functional/system_console/system_users/column_sort.spec.ts",
+          "line": 6,
+          "column": 5
+        },
+        {
+          "title": "MM-T5523-2 Non sortable columns should not sort the list when clicked",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5632,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:51:47.985Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f5ab7458df1efd3cf824-88e0997ad23b12bed754",
+          "file": "functional/system_console/system_users/column_sort.spec.ts",
+          "line": 50,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/system_console/system_users/column_toggler.spec.ts",
+      "file": "functional/system_console/system_users/column_toggler.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-T5523-3 Should list the column names with checkboxes in the correct order",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4056,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:51:53.636Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "00d898941767b23e97d6-5fa97c9e0b15e4cbcd92",
+          "file": "functional/system_console/system_users/column_toggler.spec.ts",
+          "line": 6,
+          "column": 5
+        },
+        {
+          "title": "MM-T5523-4 Should allow certain columns to be checked and others to be disabled",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4143,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:51:57.711Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "00d898941767b23e97d6-cc24079391235a83d945",
+          "file": "functional/system_console/system_users/column_toggler.spec.ts",
+          "line": 47,
+          "column": 5
+        },
+        {
+          "title": "MM-T5523-5 Should show/hide the columns which are toggled on/off",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4894,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:52:01.869Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "00d898941767b23e97d6-95f43ada13993966a4c9",
+          "file": "functional/system_console/system_users/column_toggler.spec.ts",
+          "line": 82,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/system_console/system_users/export_data.spec.ts",
+      "file": "functional/system_console/system_users/export_data.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-T5522 Should begin export of data when export button is pressed",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "fixme",
+                  "location": {
+                    "file": "/mattermost/e2e-tests/playwright/specs/functional/system_console/system_users/export_data.spec.ts",
+                    "line": 6,
+                    "column": 6
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": -1,
+                  "parallelIndex": -1,
+                  "status": "skipped",
+                  "duration": 0,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:52:06.782Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "a657085d4e9ec25bdbde-de3b85602a8500409de1",
+          "file": "functional/system_console/system_users/export_data.spec.ts",
+          "line": 6,
+          "column": 6
+        }
+      ]
+    },
+    {
+      "title": "functional/system_console/system_users/filter_popover.spec.ts",
+      "file": "functional/system_console/system_users/filter_popover.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-T5521-7 Should be able to filter users with team filter",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5369,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:52:06.784Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "41c0399f0b408ed2cdc7-6d8be37d5eb096caf78a",
+          "file": "functional/system_console/system_users/filter_popover.spec.ts",
+          "line": 6,
+          "column": 5
+        },
+        {
+          "title": "MM-T5521-8 Should be able to filter users with role filter",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6052,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:52:12.169Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "41c0399f0b408ed2cdc7-2588e1ec318581d38afe",
+          "file": "functional/system_console/system_users/filter_popover.spec.ts",
+          "line": 54,
+          "column": 5
+        },
+        {
+          "title": "MM-T5521-9 Should be able to filter users with status filter",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5849,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:52:18.238Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "41c0399f0b408ed2cdc7-63bb53fb45e692532844",
+          "file": "functional/system_console/system_users/filter_popover.spec.ts",
+          "line": 109,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/system_console/system_users/search.spec.ts",
+      "file": "functional/system_console/system_users/search.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "MM-T5521-1 Should be able to search users with their first names",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5209,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:52:24.106Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3ec6eacfa5c09c600cec-b8b9e460130036193b70",
+          "file": "functional/system_console/system_users/search.spec.ts",
+          "line": 6,
+          "column": 5
+        },
+        {
+          "title": "MM-T5521-2 Should be able to search users with their last names",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5269,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:52:29.331Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3ec6eacfa5c09c600cec-30623305d90a542a3440",
+          "file": "functional/system_console/system_users/search.spec.ts",
+          "line": 38,
+          "column": 5
+        },
+        {
+          "title": "MM-T5521-3 Should be able to search users with their emails",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5252,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:52:34.619Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3ec6eacfa5c09c600cec-3184ebafa46f33278a79",
+          "file": "functional/system_console/system_users/search.spec.ts",
+          "line": 70,
+          "column": 5
+        },
+        {
+          "title": "MM-T5521-4 Should be able to search users with their usernames",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5270,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:52:39.887Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3ec6eacfa5c09c600cec-b73e7b25129452176f0a",
+          "file": "functional/system_console/system_users/search.spec.ts",
+          "line": 102,
+          "column": 5
+        },
+        {
+          "title": "MM-T5521-5 Should be able to search users with their nick names",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5334,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:52:45.174Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3ec6eacfa5c09c600cec-8bcd588db060c64c3a38",
+          "file": "functional/system_console/system_users/search.spec.ts",
+          "line": 134,
+          "column": 5
+        },
+        {
+          "title": "MM-T5521-6 Should show no user is found when user doesnt exists",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4857,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-11T17:52:50.526Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3ec6eacfa5c09c600cec-1e104c9265e5375bd854",
+          "file": "functional/system_console/system_users/search.spec.ts",
+          "line": 165,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "functional/system_console/system_users/user_attributes_admin_editing.spec.ts",
+      "file": "functional/system_console/system_users/user_attributes_admin_editing.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "System Console - Admin User Profile Editing",
+          "file": "functional/system_console/system_users/user_attributes_admin_editing.spec.ts",
+          "line": 92,
+          "column": 6,
+          "specs": [
+            {
+              "title": "MM-65126 Should edit custom user attributes from system console",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5266,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-11T17:52:55.405Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0bcb63fb5191246209a8-fd137b381f12e8fde3ad",
+              "file": "functional/system_console/system_users/user_attributes_admin_editing.spec.ts",
+              "line": 140,
+              "column": 9
+            },
+            {
+              "title": "Should display user attributes in two-column layout",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5320,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-11T17:53:00.698Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0bcb63fb5191246209a8-e3606f429a93afa9e9bc",
+              "file": "functional/system_console/system_users/user_attributes_admin_editing.spec.ts",
+              "line": 161,
+              "column": 9
+            },
+            {
+              "title": "Should edit system email attribute and save",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6226,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-11T17:53:06.037Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0bcb63fb5191246209a8-2093229ed08fcea4cbfe",
+              "file": "functional/system_console/system_users/user_attributes_admin_editing.spec.ts",
+              "line": 191,
+              "column": 9
+            },
+            {
+              "title": "Should edit custom select attribute and save",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6231,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-11T17:53:12.281Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0bcb63fb5191246209a8-9bcdf973ef2287d59e77",
+              "file": "functional/system_console/system_users/user_attributes_admin_editing.spec.ts",
+              "line": 212,
+              "column": 9
+            },
+            {
+              "title": "Should display custom multiselect attribute and save form",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5397,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-11T17:53:18.531Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0bcb63fb5191246209a8-ec1a52af773e38eaec8f",
+              "file": "functional/system_console/system_users/user_attributes_admin_editing.spec.ts",
+              "line": 236,
+              "column": 9
+            },
+            {
+              "title": "Should validate invalid email and show error with cancel option",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6209,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-11T17:53:23.946Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0bcb63fb5191246209a8-174d9c398088116c5168",
+              "file": "functional/system_console/system_users/user_attributes_admin_editing.spec.ts",
+              "line": 270,
+              "column": 9
+            },
+            {
+              "title": "Should validate invalid URL and show error with cancel option",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6187,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-11T17:53:30.174Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0bcb63fb5191246209a8-5b07c3383cc9c04ef120",
+              "file": "functional/system_console/system_users/user_attributes_admin_editing.spec.ts",
+              "line": 313,
+              "column": 9
+            },
+            {
+              "title": "Should validate invalid email in custom email attribute",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6282,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-11T17:53:36.380Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0bcb63fb5191246209a8-dda3773d3f4353bec336",
+              "file": "functional/system_console/system_users/user_attributes_admin_editing.spec.ts",
+              "line": 350,
+              "column": 9
+            },
+            {
+              "title": "Should show save/cancel buttons when changes are made",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5182,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-11T17:53:42.681Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0bcb63fb5191246209a8-1b9ccfb426daac16f1c7",
+              "file": "functional/system_console/system_users/user_attributes_admin_editing.spec.ts",
+              "line": 373,
+              "column": 9
+            },
+            {
+              "title": "Should save all user attribute changes atomically",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6254,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-11T17:53:47.886Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0bcb63fb5191246209a8-ccaec27a10e7c07d7c45",
+              "file": "functional/system_console/system_users/user_attributes_admin_editing.spec.ts",
+              "line": 405,
+              "column": 9
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-11-11T17:43:27.517Z",
+    "duration": 626912.184,
+    "expected": 130,
+    "skipped": 10,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

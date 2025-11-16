@@ -1,0 +1,33 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Production
+build
+dist
+.next
+out
+
+# Testing
+coverage
+test-run
+
+# Misc
+.DS_Store
+*.log
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Package manager lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Generated files
+*.min.js
+*.min.css

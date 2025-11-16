@@ -1,0 +1,122 @@
+<testsuites id="" name="" tests="9" failures="3" skipped="0" errors="0" time="9.521401">
+<testsuite name="fail.spec.js" timestamp="2025-11-09T12:38:30.653Z" hostname="chromium" tests="1" failures="1" skipped="0" time="5.675" errors="0">
+<testcase name="MM-T103 has title" classname="fail.spec.js" time="5.675">
+<failure message="fail.spec.js:4:5 MM-T103 has title" type="FAILURE">
+<![CDATA[  [chromium] › fail.spec.js:4:5 › MM-T103 has title ────────────────────────────────────────────────
+
+    Error: expect(page).toHaveTitle(expected) failed
+
+    Expected pattern: /Not found/
+    Received string:  "Example Domain"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveTitle" with timeout 5000ms
+        9 × unexpected value "Example Domain"
+
+
+       6 |
+       7 |   // Expect a title "to contain" a substring.
+    >  8 |   await expect(page).toHaveTitle(/Not found/);
+         |                      ^
+       9 | });
+      10 |
+        at /Users/saturninoabril/projects/src/github/saturninoabril/test-platform/test-run/playwright/specs/fail.spec.js:8:22
+
+    Error Context: ../test-results/fail-MM-T103-has-title-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../../test-results/fail-MM-T103-has-title-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="pass.spec.js" timestamp="2025-11-09T12:38:30.653Z" hostname="chromium" tests="2" failures="0" skipped="0" time="1.408" errors="0">
+<testcase name="MM-T101 has title" classname="pass.spec.js" time="0.702">
+</testcase>
+<testcase name="MM-T102 has heading" classname="pass.spec.js" time="0.706">
+</testcase>
+</testsuite>
+<testsuite name="fail.spec.js" timestamp="2025-11-09T12:38:30.653Z" hostname="firefox" tests="1" failures="1" skipped="0" time="6.569" errors="0">
+<testcase name="MM-T103 has title" classname="fail.spec.js" time="6.569">
+<failure message="fail.spec.js:4:5 MM-T103 has title" type="FAILURE">
+<![CDATA[  [firefox] › fail.spec.js:4:5 › MM-T103 has title ─────────────────────────────────────────────────
+
+    Error: expect(page).toHaveTitle(expected) failed
+
+    Expected pattern: /Not found/
+    Received string:  "Example Domain"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveTitle" with timeout 5000ms
+        9 × unexpected value "Example Domain"
+
+
+       6 |
+       7 |   // Expect a title "to contain" a substring.
+    >  8 |   await expect(page).toHaveTitle(/Not found/);
+         |                      ^
+       9 | });
+      10 |
+        at /Users/saturninoabril/projects/src/github/saturninoabril/test-platform/test-run/playwright/specs/fail.spec.js:8:22
+
+    Error Context: ../test-results/fail-MM-T103-has-title-firefox/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../../test-results/fail-MM-T103-has-title-firefox/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="pass.spec.js" timestamp="2025-11-09T12:38:30.653Z" hostname="firefox" tests="2" failures="0" skipped="0" time="2.299" errors="0">
+<testcase name="MM-T101 has title" classname="pass.spec.js" time="1.228">
+</testcase>
+<testcase name="MM-T102 has heading" classname="pass.spec.js" time="1.071">
+</testcase>
+</testsuite>
+<testsuite name="fail.spec.js" timestamp="2025-11-09T12:38:30.653Z" hostname="webkit" tests="1" failures="1" skipped="0" time="6.603" errors="0">
+<testcase name="MM-T103 has title" classname="fail.spec.js" time="6.603">
+<failure message="fail.spec.js:4:5 MM-T103 has title" type="FAILURE">
+<![CDATA[  [webkit] › fail.spec.js:4:5 › MM-T103 has title ──────────────────────────────────────────────────
+
+    Error: expect(page).toHaveTitle(expected) failed
+
+    Expected pattern: /Not found/
+    Received string:  "Example Domain"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveTitle" with timeout 5000ms
+        9 × unexpected value "Example Domain"
+
+
+       6 |
+       7 |   // Expect a title "to contain" a substring.
+    >  8 |   await expect(page).toHaveTitle(/Not found/);
+         |                      ^
+       9 | });
+      10 |
+        at /Users/saturninoabril/projects/src/github/saturninoabril/test-platform/test-run/playwright/specs/fail.spec.js:8:22
+
+    Error Context: ../test-results/fail-MM-T103-has-title-webkit/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../../test-results/fail-MM-T103-has-title-webkit/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="pass.spec.js" timestamp="2025-11-09T12:38:30.653Z" hostname="webkit" tests="2" failures="0" skipped="0" time="2.418" errors="0">
+<testcase name="MM-T101 has title" classname="pass.spec.js" time="1.63">
+</testcase>
+<testcase name="MM-T102 has heading" classname="pass.spec.js" time="0.788">
+</testcase>
+</testsuite>
+</testsuites>
