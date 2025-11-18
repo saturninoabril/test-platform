@@ -291,7 +291,7 @@ jobs:
 
       - name: Upload API test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: test-results-api-${{ github.run_number }}
           path: |
@@ -448,7 +448,7 @@ jobs:
 
       - name: Upload page test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: test-results-pages-${{ github.run_number }}
           path: |
@@ -613,7 +613,7 @@ jobs:
 
       - name: Upload E2E test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: test-results-e2e-${{ github.run_number }}
           path: |
@@ -705,8 +705,25 @@ jobs:
       - name: Start Next.js server
         run: |
           npm run dev &
-          # Wait for server to be ready
-          timeout 60 bash -c 'until curl -f http://localhost:3001/api/public > /dev/null 2>&1; do sleep 2; done'
+          SERVER_PID=$!
+          # Wait for server to be ready with better health check
+          echo "Waiting for server to start (PID: $SERVER_PID)..."
+          RETRIES=0
+          MAX_RETRIES=30
+          until curl -f http://localhost:3001/api/public > /dev/null 2>&1; do
+            if [ $RETRIES -eq $MAX_RETRIES ]; then
+              echo "Server failed to start within 60 seconds"
+              echo "Checking if process is still running:"
+              ps aux | grep -E "node|next" || true
+              echo "Checking port 3001:"
+              netstat -tuln | grep 3001 || ss -tuln | grep 3001 || true
+              exit 1
+            fi
+            echo "Retry $RETRIES/$MAX_RETRIES: Server not ready yet..."
+            RETRIES=$((RETRIES + 1))
+            sleep 2
+          done
+          echo "Server is ready!"
         env:
           CI: true
 
@@ -726,6 +743,20 @@ jobs:
       - name: Upload test artifact to local API server
         if: always()
         run: |
+          # Debug: Show current directory and search for .env
+          echo "Current directory: $(pwd)"
+          echo "Looking for .env file..."
+          echo "Contents of current directory:"
+          ls -la
+          echo "Searching for .env files in working directory:"
+          find . -maxdepth 2 -name ".env*" -type f 2>/dev/null || true
+
+          # Verify .env file exists
+          if [ ! -f .env ]; then
+            echo "Error: .env file not found in $(pwd)"
+            exit 1
+          fi
+
           # Load JWT_TOKEN from .env file
           set -a
           . .env
@@ -786,7 +817,7 @@ jobs:
 
       - name: Upload Playwright report artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: playwright-artifact-upload-report
           path: test-run/playwright/results/
@@ -857,8 +888,25 @@ jobs:
       - name: Start Next.js server
         run: |
           npm run dev &
-          # Wait for server to be ready
-          timeout 60 bash -c 'until curl -f http://localhost:3001/api/public > /dev/null 2>&1; do sleep 2; done'
+          SERVER_PID=$!
+          # Wait for server to be ready with better health check
+          echo "Waiting for server to start (PID: $SERVER_PID)..."
+          RETRIES=0
+          MAX_RETRIES=30
+          until curl -f http://localhost:3001/api/public > /dev/null 2>&1; do
+            if [ $RETRIES -eq $MAX_RETRIES ]; then
+              echo "Server failed to start within 60 seconds"
+              echo "Checking if process is still running:"
+              ps aux | grep -E "node|next" || true
+              echo "Checking port 3001:"
+              netstat -tuln | grep 3001 || ss -tuln | grep 3001 || true
+              exit 1
+            fi
+            echo "Retry $RETRIES/$MAX_RETRIES: Server not ready yet..."
+            RETRIES=$((RETRIES + 1))
+            sleep 2
+          done
+          echo "Server is ready!"
         env:
           CI: true
 
@@ -878,6 +926,20 @@ jobs:
       - name: Upload test artifact to local API server
         if: always()
         run: |
+          # Debug: Show current directory and search for .env
+          echo "Current directory: $(pwd)"
+          echo "Looking for .env file..."
+          echo "Contents of current directory:"
+          ls -la
+          echo "Searching for .env files in working directory:"
+          find . -maxdepth 2 -name ".env*" -type f 2>/dev/null || true
+
+          # Verify .env file exists
+          if [ ! -f .env ]; then
+            echo "Error: .env file not found in $(pwd)"
+            exit 1
+          fi
+
           # Load JWT_TOKEN from .env file
           set -a
           . .env
@@ -938,7 +1000,7 @@ jobs:
 
       - name: Upload Cypress videos
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: cypress-artifact-upload-videos
           path: test-run/cypress/cypress/videos/
@@ -946,7 +1008,7 @@ jobs:
 
       - name: Upload Cypress report artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: cypress-artifact-upload-report
           path: test-run/cypress/results/
