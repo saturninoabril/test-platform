@@ -647,7 +647,6 @@ jobs:
     needs: [check, unit-tests]
     container:
       image: mcr.microsoft.com/playwright:v1.56.1-noble
-      options: --user 1001
 
     services:
       postgres:
@@ -667,6 +666,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+
+      - name: Install jq
+        run: |
+          apt-get update && apt-get install -y jq
+        env:
+          DEBIAN_FRONTEND: noninteractive
 
       - name: Setup Node.js 24
         uses: actions/setup-node@v6
@@ -832,7 +837,6 @@ jobs:
     needs: [check, unit-tests]
     container:
       image: cypress/browsers:node-24.11.1-chrome-142.0.7444.162-1-ff-145.0-edge-142.0.3595.65-1
-      options: --user 1001
 
     services:
       postgres:
@@ -852,6 +856,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+
+      - name: Install jq
+        run: |
+          apt-get update && apt-get install -y jq
+        env:
+          DEBIAN_FRONTEND: noninteractive
 
       - name: Setup Node.js 24
         uses: actions/setup-node@v6
