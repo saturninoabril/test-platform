@@ -757,9 +757,11 @@ jobs:
             exit 1
           fi
 
-          # Load JWT_TOKEN from .env file
+          # Load JWT_TOKEN from .env file using full path
+          ENV_FILE="$(pwd)/.env"
+          echo "Sourcing env file: $ENV_FILE"
           set -a
-          . .env
+          . "$ENV_FILE"
           set +a
 
           # Create payload with artifact and GitHub metadata (read JSON from file to avoid arg list limit)
@@ -940,9 +942,11 @@ jobs:
             exit 1
           fi
 
-          # Load JWT_TOKEN from .env file
+          # Load JWT_TOKEN from .env file using full path
+          ENV_FILE="$(pwd)/.env"
+          echo "Sourcing env file: $ENV_FILE"
           set -a
-          . .env
+          . "$ENV_FILE"
           set +a
 
           # Create payload with artifact and GitHub metadata (read JSON from file to avoid arg list limit)
