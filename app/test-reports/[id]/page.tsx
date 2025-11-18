@@ -81,6 +81,30 @@ async function getTestSummary(id: string): Promise<SummaryData | null> {
     });
 
     if (!res.ok) {
+      // Check if it's a 400 with processing status info (pending/failed artifacts)
+      if (res.status === 400) {
+        const errorData = await res.json();
+        if (errorData.processingStatus) {
+          // Return a minimal summary object with processing status
+          return {
+            framework: 'playwright', // Default, will be ignored for non-processed
+            frameworkVersion: null,
+            processingStatus: errorData.processingStatus,
+            processedAt: null,
+            processingDurationMs: null,
+            statistics: {
+              total: 0,
+              passed: 0,
+              failed: 0,
+              skipped: 0,
+              pending: 0,
+              timedOut: 0,
+              passRate: 0,
+              failRate: 0,
+            },
+          };
+        }
+      }
       return null;
     }
 

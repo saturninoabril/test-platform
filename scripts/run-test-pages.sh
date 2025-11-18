@@ -14,6 +14,10 @@ set +a
 # Setup database
 npx tsx scripts/test-db-setup.ts pages
 
+# Kill any existing process on port 3001
+lsof -ti :3001 | xargs kill -9 2>/dev/null || true
+sleep 1
+
 # Start dev server in background with explicit env file
 echo "Starting test server on port 3001..."
 TEST_TYPE=pages npx dotenv -e .env.test.pages -- npm run dev > tests/test-server-pages.log 2>&1 &

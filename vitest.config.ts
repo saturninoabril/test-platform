@@ -20,6 +20,7 @@ export default defineConfig({
     environment: 'node',
     globals: true,
     setupFiles: ['./vitest.setup.ts'],
+    testTimeout: 30000, // 30 seconds for tests that make HTTP requests
     env: {
       // Make environment variables available to test code
       BASE_URL: process.env.BASE_URL || 'http://localhost:3001',

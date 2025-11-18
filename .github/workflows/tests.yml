@@ -15,17 +15,21 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  statuses: write
+
 jobs:
   check:
-    name: Check (Lint + Format)
+    name: Check
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js 24
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: 'npm'
@@ -39,29 +43,18 @@ jobs:
         env:
           CI: true
 
-      - name: Add check summary
-        if: always()
-        run: |
-          echo "## 🔍 Check (Lint + Format)" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          if [ "${{ steps.check.outcome }}" == "success" ]; then
-            echo "✅ All checks passed" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "❌ Checks failed" >> $GITHUB_STEP_SUMMARY
-          fi
-
   unit-tests:
-    name: Unit Tests
+    name: Unit
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: [check]
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js 24
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: 'npm'
@@ -73,6 +66,12 @@ jobs:
         id: unit-tests
         run: |
           npm run test:unit 2>&1 | tee unit-test-output.log
+        env:
+          CI: true
+
+      - name: Run unit tests with coverage
+        id: unit-coverage
+        run: npm run test:unit:coverage 2>&1 | tee unit-coverage-output.log
         continue-on-error: true
         env:
           CI: true
@@ -81,54 +80,91 @@ jobs:
         if: always()
         id: unit-results
         run: |
+          PASSED=0
+          FAILED=0
+          COVERAGE=0
+
           if [ -f unit-test-output.log ]; then
             PASSED=$(grep -oP '(\d+) passed' unit-test-output.log | tail -1 | grep -oP '\d+' || echo "0")
             FAILED=$(grep -oP '(\d+) failed' unit-test-output.log | tail -1 | grep -oP '\d+' || echo "0")
-            SKIPPED=$(grep -oP '(\d+) skipped' unit-test-output.log | tail -1 | grep -oP '\d+' || echo "0")
-            TOTAL=$((PASSED + FAILED))
+          fi
 
-            echo "passed=$PASSED" >> $GITHUB_OUTPUT
-            echo "failed=$FAILED" >> $GITHUB_OUTPUT
-            echo "skipped=$SKIPPED" >> $GITHUB_OUTPUT
-            echo "total=$TOTAL" >> $GITHUB_OUTPUT
+          if [ -f unit-coverage-output.log ]; then
+            # Extract first percentage (Statements coverage) from coverage table
+            COVERAGE=$(grep "All files" unit-coverage-output.log | awk '{print $4}' | head -1 || echo "0")
+            echo "DEBUG: Extracted coverage: $COVERAGE"
+          else
+            echo "DEBUG: Coverage output file not found"
+          fi
 
-            echo "## 🧪 Unit Tests" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            if [ "$PASSED" -eq "0" ] && [ "$FAILED" -eq "0" ] && [ "$SKIPPED" -gt "0" ]; then
-              echo "⏭️ All $SKIPPED tests skipped" >> $GITHUB_STEP_SUMMARY
-            elif [ "$FAILED" -eq "0" ] && [ "$TOTAL" -gt "0" ]; then
-              echo "✅ All $TOTAL tests passed" >> $GITHUB_STEP_SUMMARY
-            elif [ "$FAILED" -gt "0" ]; then
-              echo "❌ $FAILED of $TOTAL tests failed" >> $GITHUB_STEP_SUMMARY
+          TOTAL=$((PASSED + FAILED))
+
+          echo "passed=$PASSED" >> $GITHUB_OUTPUT
+          echo "failed=$FAILED" >> $GITHUB_OUTPUT
+          echo "total=$TOTAL" >> $GITHUB_OUTPUT
+          echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
+
+          # Create description for status check
+          if [ "$FAILED" -eq "0" ] && [ "$TOTAL" -gt "0" ]; then
+            # Compare coverage with target (using bc for decimal comparison)
+            if [ -n "$COVERAGE" ] && [ "$COVERAGE" != "0" ]; then
+              if awk "BEGIN {exit !($COVERAGE >= 80)}"; then
+                echo "description=$TOTAL/$TOTAL passed, code coverage: $COVERAGE% (>80% target)" >> $GITHUB_OUTPUT
+              else
+                echo "description=$TOTAL/$TOTAL passed, code coverage: $COVERAGE% (<80% target)" >> $GITHUB_OUTPUT
+              fi
             else
-              echo "⚠️ No test results found" >> $GITHUB_STEP_SUMMARY
+              echo "description=$TOTAL/$TOTAL passed" >> $GITHUB_OUTPUT
             fi
+          elif [ "$FAILED" -gt "0" ]; then
+            # Include coverage info even when tests fail
+            if [ -n "$COVERAGE" ] && [ "$COVERAGE" != "0" ]; then
+              if awk "BEGIN {exit !($COVERAGE >= 80)}"; then
+                echo "description=$PASSED/$TOTAL passed, $FAILED failed, code coverage: $COVERAGE% (>80% target)" >> $GITHUB_OUTPUT
+              else
+                echo "description=$PASSED/$TOTAL passed, $FAILED failed, code coverage: $COVERAGE% (<80% target)" >> $GITHUB_OUTPUT
+              fi
+            else
+              echo "description=$PASSED/$TOTAL passed, $FAILED failed" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "description=No tests found" >> $GITHUB_OUTPUT
           fi
 
           # Exit with failure if tests failed
+          if [ "$FAILED" -gt "0" ]; then
+            echo "::error::$FAILED unit tests failed"
+            exit 1
+          fi
           if [ "${{ steps.unit-tests.outcome }}" != "success" ]; then
+            echo "::error::Unit test step failed with outcome: ${{ steps.unit-tests.outcome }}"
             exit 1
           fi
 
-      - name: Run unit tests with coverage
-        run: npm run test:unit:coverage
-        continue-on-error: true
-        env:
-          CI: true
-
-      - name: Upload coverage report
+      - name: Update commit status
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/github-script@v8
         with:
-          name: coverage-unit-${{ github.run_number }}
-          path: coverage/
-          retention-days: 30
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const description = '${{ steps.unit-results.outputs.description }}' || 'Tests completed';
+            const state = '${{ steps.unit-results.outcome }}' === 'success' ? 'success' : 'failure';
+
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: state,
+              context: 'Unit Tests',
+              description: description,
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
 
   api-tests:
-    name: API Tests
+    name: API
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    needs: [unit-tests]
+    needs: [check, unit-tests]
 
     services:
       postgres:
@@ -147,10 +183,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js 24
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: 'npm'
@@ -160,23 +196,44 @@ jobs:
 
       - name: Setup test environment files
         run: |
-          # Create .env.test.api from .env.test if it exists
-          if [ -f .env.test ]; then
-            cp .env.test .env.test.api
-          fi
+          # Create fresh .env.test.api (don't copy .env.test to avoid duplicate keys)
           # Set database connection for API tests
-          echo "DB_HOST=localhost" >> .env.test.api
+          echo "DB_HOST=localhost" > .env.test.api
           echo "DB_PORT=5433" >> .env.test.api
           echo "DB_USER=change_user" >> .env.test.api
           echo "DB_PASSWORD=change_password" >> .env.test.api
           echo "DB_NAME=test_api_db" >> .env.test.api
           echo "NODE_ENV=test" >> .env.test.api
           echo "BASE_URL=http://localhost:3001" >> .env.test.api
+          # Generate secrets for NextAuth and JWT
+          AUTH_SECRET=$(openssl rand -base64 32)
+          echo "AUTH_SECRET=$AUTH_SECRET" >> .env.test.api
+          echo "AUTH_URL=http://localhost:3001" >> .env.test.api
+          JWT_SECRET=$(openssl rand -hex 32)
+          echo "JWT_SECRET=$JWT_SECRET" >> .env.test.api
+          echo "JWT_ISSUER=test-platform" >> .env.test.api
+          # Generate test JWT tokens (export JWT_SECRET so generate-jwt can use it)
+          export JWT_SECRET
+          VALID_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "ci-service" -r "write:reports,admin" -e "90d")
+          echo "VALID_JWT_TOKEN=$VALID_JWT_TOKEN" >> .env.test.api
+          echo "JWT_TOKEN=$VALID_JWT_TOKEN" >> .env.test.api
+          # Generate expired token (expires in 1 second)
+          EXPIRED_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "expired-token" -r "write:reports" -e "1s")
+          sleep 2
+          echo "EXPIRED_JWT_TOKEN=$EXPIRED_JWT_TOKEN" >> .env.test.api
+          echo "MAX_EVENT_PAYLOAD_SIZE=1048576" >> .env.test.api
+          echo "PORT=3001" >> .env.test.api
 
       - name: Run API tests
         id: api-tests
         run: |
-          npm run test:api 2>&1 | tee api-test-output.log
+          # Ensure output file exists
+          touch api-test-output.log
+          npm run test:api 2>&1 | tee api-test-output.log || true
+          # Verify file has content
+          if [ ! -s api-test-output.log ]; then
+            echo "Warning: Test output file is empty" | tee api-test-output.log
+          fi
         continue-on-error: true
         env:
           CI: true
@@ -196,6 +253,15 @@ jobs:
             echo "skipped=$SKIPPED" >> $GITHUB_OUTPUT
             echo "total=$TOTAL" >> $GITHUB_OUTPUT
 
+            # Create description for status check
+            if [ "$FAILED" -eq "0" ] && [ "$TOTAL" -gt "0" ]; then
+              echo "description=$TOTAL/$TOTAL passed" >> $GITHUB_OUTPUT
+            elif [ "$FAILED" -gt "0" ]; then
+              echo "description=$PASSED/$TOTAL passed, $FAILED failed" >> $GITHUB_OUTPUT
+            else
+              echo "description=No tests found" >> $GITHUB_OUTPUT
+            fi
+
             echo "## 🔌 API Tests" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             if [ "$PASSED" -eq "0" ] && [ "$FAILED" -eq "0" ] && [ "$SKIPPED" -gt "0" ]; then
@@ -207,28 +273,56 @@ jobs:
             else
               echo "⚠️ No test results found" >> $GITHUB_STEP_SUMMARY
             fi
+          else
+            # File doesn't exist - set default outputs
+            echo "description=Test output not found" >> $GITHUB_OUTPUT
+            FAILED=0
           fi
 
           # Exit with failure if tests failed
+          if [ "$FAILED" -gt "0" ]; then
+            echo "::error::$FAILED API tests failed"
+            exit 1
+          fi
           if [ "${{ steps.api-tests.outcome }}" != "success" ]; then
+            echo "::error::API test step failed with outcome: ${{ steps.api-tests.outcome }}"
             exit 1
           fi
 
       - name: Upload API test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: test-results-api-${{ github.run_number }}
           path: |
             tests/test-server-api.log
           retention-days: 30
 
+      - name: Update commit status
+        if: always()
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const description = '${{ steps.api-results.outputs.description }}' || 'Tests completed';
+            const state = '${{ steps.api-results.outcome }}' === 'success' ? 'success' : 'failure';
+
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: state,
+              context: 'API Tests',
+              description: description,
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
+
   page-tests:
-    name: Page Tests
+    name: Page
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    needs: [api-tests]
-
+    needs: [check, unit-tests]
+    
     services:
       postgres:
         image: postgres:17.6
@@ -246,10 +340,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js 24
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: 'npm'
@@ -259,23 +353,44 @@ jobs:
 
       - name: Setup test environment files
         run: |
-          # Create .env.test.pages from .env.test if it exists
-          if [ -f .env.test ]; then
-            cp .env.test .env.test.pages
-          fi
+          # Create fresh .env.test.pages (don't copy .env.test to avoid duplicate keys)
           # Set database connection for page tests
-          echo "DB_HOST=localhost" >> .env.test.pages
+          echo "DB_HOST=localhost" > .env.test.pages
           echo "DB_PORT=5433" >> .env.test.pages
           echo "DB_USER=change_user" >> .env.test.pages
           echo "DB_PASSWORD=change_password" >> .env.test.pages
           echo "DB_NAME=test_pages_db" >> .env.test.pages
           echo "NODE_ENV=test" >> .env.test.pages
           echo "BASE_URL=http://localhost:3001" >> .env.test.pages
+          # Generate secrets for NextAuth and JWT
+          AUTH_SECRET=$(openssl rand -base64 32)
+          echo "AUTH_SECRET=$AUTH_SECRET" >> .env.test.pages
+          echo "AUTH_URL=http://localhost:3001" >> .env.test.pages
+          JWT_SECRET=$(openssl rand -hex 32)
+          echo "JWT_SECRET=$JWT_SECRET" >> .env.test.pages
+          echo "JWT_ISSUER=test-platform" >> .env.test.pages
+          # Generate test JWT tokens (export JWT_SECRET so generate-jwt can use it)
+          export JWT_SECRET
+          VALID_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "ci-service" -r "write:reports,admin" -e "90d")
+          echo "VALID_JWT_TOKEN=$VALID_JWT_TOKEN" >> .env.test.pages
+          echo "JWT_TOKEN=$VALID_JWT_TOKEN" >> .env.test.pages
+          # Generate expired token (expires in 1 second)
+          EXPIRED_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "expired-token" -r "write:reports" -e "1s")
+          sleep 2
+          echo "EXPIRED_JWT_TOKEN=$EXPIRED_JWT_TOKEN" >> .env.test.pages
+          echo "MAX_EVENT_PAYLOAD_SIZE=1048576" >> .env.test.pages
+          echo "PORT=3001" >> .env.test.pages
 
       - name: Run page tests
         id: page-tests
         run: |
-          npm run test:pages 2>&1 | tee page-test-output.log
+          # Ensure output file exists
+          touch page-test-output.log
+          npm run test:pages 2>&1 | tee page-test-output.log || true
+          # Verify file has content
+          if [ ! -s page-test-output.log ]; then
+            echo "Warning: Test output file is empty" | tee page-test-output.log
+          fi
         continue-on-error: true
         env:
           CI: true
@@ -295,6 +410,15 @@ jobs:
             echo "skipped=$SKIPPED" >> $GITHUB_OUTPUT
             echo "total=$TOTAL" >> $GITHUB_OUTPUT
 
+            # Create description for status check
+            if [ "$FAILED" -eq "0" ] && [ "$TOTAL" -gt "0" ]; then
+              echo "description=$TOTAL/$TOTAL passed" >> $GITHUB_OUTPUT
+            elif [ "$FAILED" -gt "0" ]; then
+              echo "description=$PASSED/$TOTAL passed, $FAILED failed" >> $GITHUB_OUTPUT
+            else
+              echo "description=No tests found" >> $GITHUB_OUTPUT
+            fi
+
             echo "## 📄 Page Tests" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             if [ "$PASSED" -eq "0" ] && [ "$FAILED" -eq "0" ] && [ "$SKIPPED" -gt "0" ]; then
@@ -306,29 +430,55 @@ jobs:
             else
               echo "⚠️ No test results found" >> $GITHUB_STEP_SUMMARY
             fi
+          else
+            # File doesn't exist - set default outputs
+            echo "description=Test output not found" >> $GITHUB_OUTPUT
+            FAILED=0
           fi
 
           # Exit with failure if tests failed
+          if [ "$FAILED" -gt "0" ]; then
+            echo "::error::$FAILED page tests failed"
+            exit 1
+          fi
           if [ "${{ steps.page-tests.outcome }}" != "success" ]; then
+            echo "::error::Page test step failed with outcome: ${{ steps.page-tests.outcome }}"
             exit 1
           fi
 
       - name: Upload page test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: test-results-pages-${{ github.run_number }}
           path: |
             tests/test-server-pages.log
           retention-days: 30
 
+      - name: Update commit status
+        if: always()
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const description = '${{ steps.page-results.outputs.description }}' || 'Tests completed';
+            const state = '${{ steps.page-results.outcome }}' === 'success' ? 'success' : 'failure';
+
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: state,
+              context: 'Page Tests',
+              description: description,
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
+
   e2e-tests:
-    name: E2E Tests
+    name: E2E
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs:
-      - page-tests
-      - api-tests
+    needs: [check, unit-tests]
 
     services:
       postgres:
@@ -347,10 +497,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js 24
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: 'npm'
@@ -363,23 +513,44 @@ jobs:
 
       - name: Setup test environment files
         run: |
-          # Create .env.test.e2e from .env.test if it exists
-          if [ -f .env.test ]; then
-            cp .env.test .env.test.e2e
-          fi
+          # Create fresh .env.test.e2e (don't copy .env.test to avoid duplicate keys)
           # Set database connection for E2E tests
-          echo "DB_HOST=localhost" >> .env.test.e2e
+          echo "DB_HOST=localhost" > .env.test.e2e
           echo "DB_PORT=5433" >> .env.test.e2e
           echo "DB_USER=change_user" >> .env.test.e2e
           echo "DB_PASSWORD=change_password" >> .env.test.e2e
           echo "DB_NAME=test_e2e_db" >> .env.test.e2e
           echo "NODE_ENV=test" >> .env.test.e2e
           echo "BASE_URL=http://localhost:3001" >> .env.test.e2e
+          # Generate secrets for NextAuth and JWT
+          AUTH_SECRET=$(openssl rand -base64 32)
+          echo "AUTH_SECRET=$AUTH_SECRET" >> .env.test.e2e
+          echo "AUTH_URL=http://localhost:3001" >> .env.test.e2e
+          JWT_SECRET=$(openssl rand -hex 32)
+          echo "JWT_SECRET=$JWT_SECRET" >> .env.test.e2e
+          echo "JWT_ISSUER=test-platform" >> .env.test.e2e
+          # Generate test JWT tokens (export JWT_SECRET so generate-jwt can use it)
+          export JWT_SECRET
+          VALID_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "ci-service" -r "write:reports,admin" -e "90d")
+          echo "VALID_JWT_TOKEN=$VALID_JWT_TOKEN" >> .env.test.e2e
+          echo "JWT_TOKEN=$VALID_JWT_TOKEN" >> .env.test.e2e
+          # Generate expired token (expires in 1 second)
+          EXPIRED_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "expired-token" -r "write:reports" -e "1s")
+          sleep 2
+          echo "EXPIRED_JWT_TOKEN=$EXPIRED_JWT_TOKEN" >> .env.test.e2e
+          echo "MAX_EVENT_PAYLOAD_SIZE=1048576" >> .env.test.e2e
+          echo "PORT=3001" >> .env.test.e2e
 
       - name: Run E2E tests
         id: e2e-tests
         run: |
-          npm run test:e2e 2>&1 | tee e2e-test-output.log
+          # Ensure output file exists
+          touch e2e-test-output.log
+          npm run test:e2e 2>&1 | tee e2e-test-output.log || true
+          # Verify file has content
+          if [ ! -s e2e-test-output.log ]; then
+            echo "Warning: Test output file is empty" | tee e2e-test-output.log
+          fi
         continue-on-error: true
         env:
           CI: true
@@ -400,6 +571,15 @@ jobs:
             echo "skipped=$SKIPPED" >> $GITHUB_OUTPUT
             echo "total=$TOTAL" >> $GITHUB_OUTPUT
 
+            # Create description for status check
+            if [ "$FAILED" -eq "0" ] && [ "$TOTAL" -gt "0" ]; then
+              echo "description=$TOTAL/$TOTAL passed" >> $GITHUB_OUTPUT
+            elif [ "$FAILED" -gt "0" ]; then
+              echo "description=$PASSED/$TOTAL passed, $FAILED failed" >> $GITHUB_OUTPUT
+            else
+              echo "description=No tests found" >> $GITHUB_OUTPUT
+            fi
+
             echo "## 🎭 E2E Tests" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             if [ "$PASSED" -eq "0" ] && [ "$FAILED" -eq "0" ] && [ "$SKIPPED" -gt "0" ]; then
@@ -415,16 +595,25 @@ jobs:
             echo "- **Browser**: Chromium" >> $GITHUB_STEP_SUMMARY
             echo "- **Workers**: 1 (serial)" >> $GITHUB_STEP_SUMMARY
             echo "- **Database**: PostgreSQL 17.6 (TRUNCATE isolation)" >> $GITHUB_STEP_SUMMARY
+          else
+            # File doesn't exist - set default outputs
+            echo "description=Test output not found" >> $GITHUB_OUTPUT
+            FAILED=0
           fi
 
           # Exit with failure if tests failed
+          if [ "$FAILED" -gt "0" ]; then
+            echo "::error::$FAILED E2E tests failed"
+            exit 1
+          fi
           if [ "${{ steps.e2e-tests.outcome }}" != "success" ]; then
+            echo "::error::E2E test step failed with outcome: ${{ steps.e2e-tests.outcome }}"
             exit 1
           fi
 
       - name: Upload E2E test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: test-results-e2e-${{ github.run_number }}
           path: |
@@ -432,80 +621,417 @@ jobs:
             playwright-report/
           retention-days: 30
 
-      - name: Comment PR with test results
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
+      - name: Update commit status
+        if: always()
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const lintStatus = '${{ needs.lint.result }}';
-            const formatStatus = '${{ needs.format-check.result }}';
-            const unitStatus = '${{ needs.unit-tests.result }}';
-            const apiStatus = '${{ needs.api-tests.result }}';
-            const pageStatus = '${{ needs.page-tests.result }}';
-            const e2eStatus = '${{ needs.e2e-tests.result }}';
+            const description = '${{ steps.e2e-results.outputs.description }}' || 'Tests completed';
+            const state = '${{ steps.e2e-results.outcome }}' === 'success' ? 'success' : 'failure';
 
-            const statusIcon = (status) => status === 'success' ? '✅' : '❌';
-            const allPassed = [lintStatus, formatStatus, unitStatus, apiStatus, pageStatus, e2eStatus].every(s => s === 'success');
-
-            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-
-            let message = `## 🧪 Test Results - Run #${context.runNumber}\n\n`;
-
-            if (allPassed) {
-              message += '### ✅ All Checks and Tests Passed!\n\n';
-            } else {
-              message += '### ❌ Some Checks or Tests Failed\n\n';
-            }
-
-            message += '| Check/Test Suite | Status |\n';
-            message += '|------------------|--------|\n';
-            message += `| Lint | ${statusIcon(lintStatus)} ${lintStatus} |\n`;
-            message += `| Format Check | ${statusIcon(formatStatus)} ${formatStatus} |\n`;
-            message += `| Unit Tests | ${statusIcon(unitStatus)} ${unitStatus} |\n`;
-            message += `| API Tests | ${statusIcon(apiStatus)} ${apiStatus} |\n`;
-            message += `| Page Tests | ${statusIcon(pageStatus)} ${pageStatus} |\n`;
-            message += `| E2E Tests | ${statusIcon(e2eStatus)} ${e2eStatus} |\n\n`;
-
-            message += `### Test Artifacts\n`;
-            message += `- [View Full Test Report](${runUrl})\n`;
-            message += `- [Download Unit Coverage](${runUrl}#artifacts)\n`;
-            message += `- [Download API Test Logs](${runUrl}#artifacts)\n`;
-            message += `- [Download Page Test Logs](${runUrl}#artifacts)\n`;
-            message += `- [Download E2E Report & Screenshots](${runUrl}#artifacts)\n\n`;
-
-            message += `### Test Configuration\n`;
-            message += `- **Framework**: Playwright 1.48 + Vitest 4.0.9\n`;
-            message += `- **Database**: PostgreSQL 17.6\n`;
-            message += `- **Node.js**: 24.11.1 LTS\n`;
-            message += `- **Isolation**: Transaction rollback (Vitest) + TRUNCATE (E2E)\n\n`;
-
-            message += `_Test artifacts retained for 30 days_`;
-
-            // Find existing comment
-            const { data: comments } = await github.rest.issues.listComments({
+            await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              sha: context.sha,
+              state: state,
+              context: 'E2E Tests',
+              description: description,
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
 
-            const botComment = comments.find(comment =>
-              comment.user.type === 'Bot' &&
-              comment.body.includes('🧪 Test Results')
-            );
+  # Job 1: Run Playwright tests in Playwright container and save artifacts
+  playwright-artifact-test:
+    name: Upload artifact - Playwright Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [check, unit-tests]
+    container:
+      image: mcr.microsoft.com/playwright:v1.56.1-noble
 
-            if (botComment) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: botComment.id,
-                body: message
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: message
-              });
-            }
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install Playwright test dependencies
+        run: npm ci
+        working-directory: ./test-run/playwright
+
+      - name: Run Playwright tests
+        id: tests
+        continue-on-error: true
+        run: npm test
+        working-directory: ./test-run/playwright
+
+      - name: Upload Playwright test results
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: playwright-test-results
+          path: test-run/playwright/results/
+          retention-days: 1
+
+  # Job 2: Upload Playwright artifacts to API server on ubuntu-latest
+  playwright-artifact-upload:
+    name: Upload artifact - Playwright
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: playwright-artifact-test
+
+    services:
+      postgres:
+        image: postgres:17.6
+        env:
+          POSTGRES_USER: change_user
+          POSTGRES_PASSWORD: change_password
+          POSTGRES_DB: playwright_artifact_test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Download Playwright test results
+        uses: actions/download-artifact@v5
+        with:
+          name: playwright-test-results
+          path: test-run/playwright/results/
+
+      - name: Install main app dependencies
+        run: npm ci
+
+      - name: Setup test database and environment
+        run: |
+          # Set database connection for artifact upload test
+          echo "DB_HOST=localhost" >> .env
+          echo "DB_PORT=5432" >> .env
+          echo "DB_USER=change_user" >> .env
+          echo "DB_PASSWORD=change_password" >> .env
+          echo "DB_NAME=playwright_artifact_test_db" >> .env
+          echo "NODE_ENV=test" >> .env
+          # Generate secrets for NextAuth and JWT
+          AUTH_SECRET=$(openssl rand -base64 32)
+          echo "AUTH_SECRET=$AUTH_SECRET" >> .env
+          echo "AUTH_URL=http://localhost:3001" >> .env
+          JWT_SECRET=$(openssl rand -hex 32)
+          echo "JWT_SECRET=$JWT_SECRET" >> .env
+          # Generate JWT token and add to .env
+          JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "test-script" -r "write:reports" -e "24h" 2>/dev/null)
+          echo "JWT_TOKEN=$JWT_TOKEN" >> .env
+          echo "API_URL=http://localhost:3001" >> .env
+
+      - name: Push database schema
+        run: |
+          set -a
+          . .env
+          set +a
+          npm run db:push
+
+      - name: Start Next.js server
+        run: |
+          set -a
+          . .env
+          set +a
+          npm run dev &
+          SERVER_PID=$!
+          # Wait for server to be ready
+          echo "Waiting for server to start (PID: $SERVER_PID)..."
+          RETRIES=0
+          MAX_RETRIES=30
+          until curl -f http://localhost:3001/api/public > /dev/null 2>&1; do
+            if [ $RETRIES -eq $MAX_RETRIES ]; then
+              echo "Server failed to start within 60 seconds"
+              echo "Checking if process is still running:"
+              ps aux | grep -E "node|next" || true
+              echo "Checking port 3001:"
+              netstat -tuln | grep 3001 || ss -tuln | grep 3001 || true
+              exit 1
+            fi
+            echo "Retry $RETRIES/$MAX_RETRIES: Server not ready yet..."
+            RETRIES=$((RETRIES + 1))
+            sleep 2
+          done
+          echo "Server is ready!"
+        env:
+          CI: true
+
+      - name: Upload test artifact to local API server
+        if: always()
+        run: |
+          # Load JWT_TOKEN from .env file
+          set -a
+          . .env
+          set +a
+
+          # Create payload with artifact and GitHub metadata
+          PAYLOAD=$(jq \
+            --arg framework "playwright" \
+            --arg repo "${{ github.repository }}" \
+            --arg sha "${{ github.sha }}" \
+            --arg headRef "${{ github.head_ref }}" \
+            --arg baseRef "${{ github.base_ref }}" \
+            --arg ref "${{ github.ref }}" \
+            --arg actor "${{ github.actor }}" \
+            --arg runId "${{ github.run_id }}" \
+            --argjson runNumber "${{ github.run_number }}" \
+            --argjson runAttempt "${{ github.run_attempt }}" \
+            --arg job "${{ github.job }}" \
+            --arg runner "${{ runner.name }}" \
+            '{
+              framework: $framework,
+              artifact: .,
+              githubRepository: $repo,
+              githubSha: $sha,
+              githubHeadRef: $headRef,
+              githubBaseRef: $baseRef,
+              githubRef: $ref,
+              githubActor: $actor,
+              githubRunId: $runId,
+              githubRunNumber: $runNumber,
+              githubRunAttempt: $runAttempt,
+              githubJob: $job,
+              runnerName: $runner
+            }' test-run/playwright/results/json/test-results.json)
+
+          # Send to local API server
+          RESPONSE=$(curl -X POST "http://localhost:3001/api/test-reports" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $JWT_TOKEN" \
+            -d "$PAYLOAD" \
+            -w "\n%{http_code}" \
+            -s)
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | head -n-1)
+
+          echo "HTTP Response Code: $HTTP_CODE"
+          echo "Response Body: $BODY"
+
+          # Check if upload was successful (2xx status code)
+          if [[ "$HTTP_CODE" =~ ^2 ]]; then
+            echo "✅ Artifact uploaded successfully"
+            exit 0
+          else
+            echo "❌ Artifact upload failed"
+            exit 1
+          fi
+
+  # Job 3: Run Cypress tests in Cypress container and save artifacts
+  cypress-artifact-test:
+    name: Upload artifact - Cypress Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [check, unit-tests]
+    container:
+      image: cypress/browsers:node-24.11.1-chrome-142.0.7444.162-1-ff-145.0-edge-142.0.3595.65-1
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install Cypress test dependencies
+        run: npm ci
+        working-directory: ./test-run/cypress
+
+      - name: Run Cypress tests
+        id: tests
+        continue-on-error: true
+        run: npm test
+        working-directory: ./test-run/cypress
+
+      - name: Upload Cypress test results
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: cypress-test-results
+          path: test-run/cypress/results/
+          retention-days: 1
+
+      - name: Upload Cypress videos
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: cypress-test-videos
+          path: test-run/cypress/cypress/videos/
+          retention-days: 1
+
+  # Job 4: Upload Cypress artifacts to API server on ubuntu-latest
+  cypress-artifact-upload:
+    name: Upload artifact - Cypress
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: cypress-artifact-test
+
+    services:
+      postgres:
+        image: postgres:17.6
+        env:
+          POSTGRES_USER: change_user
+          POSTGRES_PASSWORD: change_password
+          POSTGRES_DB: cypress_artifact_test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Download Cypress test results
+        uses: actions/download-artifact@v5
+        with:
+          name: cypress-test-results
+          path: test-run/cypress/results/
+
+      - name: Install main app dependencies
+        run: npm ci
+
+      - name: Setup test database and environment
+        run: |
+          # Set database connection for artifact upload test
+          echo "DB_HOST=localhost" >> .env
+          echo "DB_PORT=5432" >> .env
+          echo "DB_USER=change_user" >> .env
+          echo "DB_PASSWORD=change_password" >> .env
+          echo "DB_NAME=cypress_artifact_test_db" >> .env
+          echo "NODE_ENV=test" >> .env
+          # Generate secrets for NextAuth and JWT
+          AUTH_SECRET=$(openssl rand -base64 32)
+          echo "AUTH_SECRET=$AUTH_SECRET" >> .env
+          echo "AUTH_URL=http://localhost:3001" >> .env
+          JWT_SECRET=$(openssl rand -hex 32)
+          echo "JWT_SECRET=$JWT_SECRET" >> .env
+          # Generate JWT token and add to .env
+          JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "test-script" -r "write:reports" -e "24h" 2>/dev/null)
+          echo "JWT_TOKEN=$JWT_TOKEN" >> .env
+          echo "API_URL=http://localhost:3001" >> .env
+
+      - name: Push database schema
+        run: |
+          set -a
+          . .env
+          set +a
+          npm run db:push
+
+      - name: Start Next.js server
+        run: |
+          set -a
+          . .env
+          set +a
+          npm run dev &
+          SERVER_PID=$!
+          # Wait for server to be ready
+          echo "Waiting for server to start (PID: $SERVER_PID)..."
+          RETRIES=0
+          MAX_RETRIES=30
+          until curl -f http://localhost:3001/api/public > /dev/null 2>&1; do
+            if [ $RETRIES -eq $MAX_RETRIES ]; then
+              echo "Server failed to start within 60 seconds"
+              echo "Checking if process is still running:"
+              ps aux | grep -E "node|next" || true
+              echo "Checking port 3001:"
+              netstat -tuln | grep 3001 || ss -tuln | grep 3001 || true
+              exit 1
+            fi
+            echo "Retry $RETRIES/$MAX_RETRIES: Server not ready yet..."
+            RETRIES=$((RETRIES + 1))
+            sleep 2
+          done
+          echo "Server is ready!"
+        env:
+          CI: true
+
+      - name: Upload test artifact to local API server
+        if: always()
+        run: |
+          # Load JWT_TOKEN from .env file
+          set -a
+          . .env
+          set +a
+
+          # Create payload with artifact and GitHub metadata
+          PAYLOAD=$(jq \
+            --arg framework "cypress" \
+            --arg repo "${{ github.repository }}" \
+            --arg sha "${{ github.sha }}" \
+            --arg headRef "${{ github.head_ref }}" \
+            --arg baseRef "${{ github.base_ref }}" \
+            --arg ref "${{ github.ref }}" \
+            --arg actor "${{ github.actor }}" \
+            --arg runId "${{ github.run_id }}" \
+            --argjson runNumber "${{ github.run_number }}" \
+            --argjson runAttempt "${{ github.run_attempt }}" \
+            --arg job "${{ github.job }}" \
+            --arg runner "${{ runner.name }}" \
+            '{
+              framework: $framework,
+              artifact: .,
+              githubRepository: $repo,
+              githubSha: $sha,
+              githubHeadRef: $headRef,
+              githubBaseRef: $baseRef,
+              githubRef: $ref,
+              githubActor: $actor,
+              githubRunId: $runId,
+              githubRunNumber: $runNumber,
+              githubRunAttempt: $runAttempt,
+              githubJob: $job,
+              runnerName: $runner
+            }' test-run/cypress/results/mochawesome-report/mochawesome.json)
+
+          # Send to local API server
+          RESPONSE=$(curl -X POST "http://localhost:3001/api/test-reports" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $JWT_TOKEN" \
+            -d "$PAYLOAD" \
+            -w "\n%{http_code}" \
+            -s)
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | head -n-1)
+
+          echo "HTTP Response Code: $HTTP_CODE"
+          echo "Response Body: $BODY"
+
+          # Check if upload was successful (2xx status code)
+          if [[ "$HTTP_CODE" =~ ^2 ]]; then
+            echo "✅ Artifact uploaded successfully"
+            exit 0
+          else
+            echo "❌ Artifact upload failed"
+            exit 1
+          fi

@@ -15,12 +15,6 @@ import dotenv from 'dotenv';
 import { existsSync } from 'fs';
 import { resolve } from 'path';
 
-// Load .env file if it exists
-const envPath = resolve(process.cwd(), '.env');
-if (existsSync(envPath)) {
-  dotenv.config({ path: envPath });
-}
-
 import { generateJwtToken, generateJwtSecret } from '../lib/auth/jwt';
 
 interface Args {
@@ -28,6 +22,7 @@ interface Args {
   roles?: string;
   expires?: string;
   generateSecret?: boolean;
+  quiet?: boolean;
 }
 
 function parseArgs(): Args {
@@ -51,6 +46,10 @@ function parseArgs(): Args {
       case '--generate-secret':
         args.generateSecret = true;
         break;
+      case '--quiet':
+      case '-q':
+        args.quiet = true;
+        break;
       case '--help':
       case '-h':
         console.log(`
@@ -64,6 +63,7 @@ Options:
   --subject, -s      Subject (user/service identifier) - required
   --roles, -r        Comma-separated roles (e.g., "admin,read:events,write:events")
   --expires, -e      Token expiration (default: "1h", examples: "24h", "7d", "30m")
+  --quiet, -q        Output only the token (for scripts/automation)
   --generate-secret  Generate a new JWT secret for .env file
   --help, -h         Show this help message
 
@@ -73,6 +73,9 @@ Examples:
 
   # Generate a token with multiple roles
   npm run generate-jwt -- -s "analytics-service" -r "read:events,read:users" -e "7d"
+
+  # Generate a token in quiet mode (for scripts)
+  JWT_TOKEN=$(npm run generate-jwt -- -s "test-script" -r "write:reports" -e "24h" -q 2>&1)
 
   # Generate a new JWT secret
   npm run generate-jwt -- --generate-secret
@@ -90,6 +93,23 @@ Environment Variables Required:
 
 async function main() {
   const args = parseArgs();
+
+  // Load .env file
+  const envPath = resolve(process.cwd(), '.env');
+  if (existsSync(envPath)) {
+    // In quiet mode, temporarily suppress console output during dotenv loading
+    const originalLog = console.log;
+    const originalInfo = console.info;
+    if (args.quiet) {
+      console.log = () => {};
+      console.info = () => {};
+    }
+    dotenv.config({ path: envPath });
+    if (args.quiet) {
+      console.log = originalLog;
+      console.info = originalInfo;
+    }
+  }
 
   // Handle secret generation
   if (args.generateSecret) {
@@ -124,6 +144,13 @@ async function main() {
   try {
     const token = generateJwtToken(args.subject, roles, expiresIn);
 
+    // Quiet mode: output only the token
+    if (args.quiet) {
+      console.log(token);
+      return;
+    }
+
+    // Normal mode: output with formatting
     console.log('\n✅ JWT Token Generated Successfully!');
     console.log('━'.repeat(80));
     console.log('\n📋 Token Details:');
