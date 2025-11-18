@@ -50,3 +50,5 @@ next-env.d.ts
 .claude/
 .specify/
 specs/
+# But allow test-run specs
+!test-run/*/specs/

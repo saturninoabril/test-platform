@@ -66,10 +66,82 @@ jobs:
           CI: true
 
       - name: Run unit tests with coverage
-        run: npm run test:unit:coverage
+        id: unit-coverage
+        run: npm run test:unit:coverage 2>&1 | tee unit-coverage-output.log
         continue-on-error: true
         env:
           CI: true
+
+      - name: Parse unit test results
+        if: always()
+        id: unit-results
+        run: |
+          PASSED=0
+          FAILED=0
+          COVERAGE=0
+
+          if [ -f unit-test-output.log ]; then
+            PASSED=$(grep -oP '(\d+) passed' unit-test-output.log | tail -1 | grep -oP '\d+' || echo "0")
+            FAILED=$(grep -oP '(\d+) failed' unit-test-output.log | tail -1 | grep -oP '\d+' || echo "0")
+          fi
+
+          if [ -f unit-coverage-output.log ]; then
+            COVERAGE=$(grep -oP 'All files\s+\|\s+[\d.]+' unit-coverage-output.log | grep -oP '[\d.]+$' || echo "0")
+          fi
+
+          TOTAL=$((PASSED + FAILED))
+
+          echo "passed=$PASSED" >> $GITHUB_OUTPUT
+          echo "failed=$FAILED" >> $GITHUB_OUTPUT
+          echo "total=$TOTAL" >> $GITHUB_OUTPUT
+          echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
+
+          # Create description for status check
+          if [ "$FAILED" -eq "0" ] && [ "$TOTAL" -gt "0" ]; then
+            # Compare coverage with target (using bc for decimal comparison)
+            if [ -n "$COVERAGE" ] && [ "$COVERAGE" != "0" ]; then
+              if awk "BEGIN {exit !($COVERAGE >= 80)}"; then
+                echo "description=$TOTAL/$TOTAL passed, code coverage: $COVERAGE% (>80% target)" >> $GITHUB_OUTPUT
+              else
+                echo "description=$TOTAL/$TOTAL passed, code coverage: $COVERAGE% (<80% target)" >> $GITHUB_OUTPUT
+              fi
+            else
+              echo "description=$TOTAL/$TOTAL passed" >> $GITHUB_OUTPUT
+            fi
+          elif [ "$FAILED" -gt "0" ]; then
+            echo "description=$PASSED/$TOTAL passed, $FAILED failed" >> $GITHUB_OUTPUT
+          else
+            echo "description=No tests found" >> $GITHUB_OUTPUT
+          fi
+
+          # Exit with failure if tests failed
+          if [ "$FAILED" -gt "0" ]; then
+            echo "::error::$FAILED unit tests failed"
+            exit 1
+          fi
+          if [ "${{ steps.unit-tests.outcome }}" != "success" ]; then
+            echo "::error::Unit test step failed with outcome: ${{ steps.unit-tests.outcome }}"
+            exit 1
+          fi
+
+      - name: Update commit status
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const description = '${{ steps.unit-results.outputs.description }}' || 'Tests completed';
+            const state = '${{ steps.unit-results.outcome }}' === 'success' ? 'success' : 'failure';
+
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: state,
+              context: 'Unit Tests',
+              description: description,
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
 
   api-tests:
     name: API
@@ -158,6 +230,15 @@ jobs:
             echo "skipped=$SKIPPED" >> $GITHUB_OUTPUT
             echo "total=$TOTAL" >> $GITHUB_OUTPUT
 
+            # Create description for status check
+            if [ "$FAILED" -eq "0" ] && [ "$TOTAL" -gt "0" ]; then
+              echo "description=$TOTAL/$TOTAL passed" >> $GITHUB_OUTPUT
+            elif [ "$FAILED" -gt "0" ]; then
+              echo "description=$PASSED/$TOTAL passed, $FAILED failed" >> $GITHUB_OUTPUT
+            else
+              echo "description=No tests found" >> $GITHUB_OUTPUT
+            fi
+
             echo "## 🔌 API Tests" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             if [ "$PASSED" -eq "0" ] && [ "$FAILED" -eq "0" ] && [ "$SKIPPED" -gt "0" ]; then
@@ -172,7 +253,12 @@ jobs:
           fi
 
           # Exit with failure if tests failed
+          if [ "$FAILED" -gt "0" ]; then
+            echo "::error::$FAILED API tests failed"
+            exit 1
+          fi
           if [ "${{ steps.api-tests.outcome }}" != "success" ]; then
+            echo "::error::API test step failed with outcome: ${{ steps.api-tests.outcome }}"
             exit 1
           fi
 
@@ -184,6 +270,25 @@ jobs:
           path: |
             tests/test-server-api.log
           retention-days: 30
+
+      - name: Update commit status
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const description = '${{ steps.api-results.outputs.description }}' || 'Tests completed';
+            const state = '${{ steps.api-results.outcome }}' === 'success' ? 'success' : 'failure';
+
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: state,
+              context: 'API Tests',
+              description: description,
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
 
   page-tests:
     name: Page
@@ -272,6 +377,15 @@ jobs:
             echo "skipped=$SKIPPED" >> $GITHUB_OUTPUT
             echo "total=$TOTAL" >> $GITHUB_OUTPUT
 
+            # Create description for status check
+            if [ "$FAILED" -eq "0" ] && [ "$TOTAL" -gt "0" ]; then
+              echo "description=$TOTAL/$TOTAL passed" >> $GITHUB_OUTPUT
+            elif [ "$FAILED" -gt "0" ]; then
+              echo "description=$PASSED/$TOTAL passed, $FAILED failed" >> $GITHUB_OUTPUT
+            else
+              echo "description=No tests found" >> $GITHUB_OUTPUT
+            fi
+
             echo "## 📄 Page Tests" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             if [ "$PASSED" -eq "0" ] && [ "$FAILED" -eq "0" ] && [ "$SKIPPED" -gt "0" ]; then
@@ -286,7 +400,12 @@ jobs:
           fi
 
           # Exit with failure if tests failed
+          if [ "$FAILED" -gt "0" ]; then
+            echo "::error::$FAILED page tests failed"
+            exit 1
+          fi
           if [ "${{ steps.page-tests.outcome }}" != "success" ]; then
+            echo "::error::Page test step failed with outcome: ${{ steps.page-tests.outcome }}"
             exit 1
           fi
 
@@ -298,6 +417,25 @@ jobs:
           path: |
             tests/test-server-pages.log
           retention-days: 30
+
+      - name: Update commit status
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const description = '${{ steps.page-results.outputs.description }}' || 'Tests completed';
+            const state = '${{ steps.page-results.outcome }}' === 'success' ? 'success' : 'failure';
+
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: state,
+              context: 'Page Tests',
+              description: description,
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
 
   e2e-tests:
     name: E2E
@@ -394,6 +532,15 @@ jobs:
             echo "skipped=$SKIPPED" >> $GITHUB_OUTPUT
             echo "total=$TOTAL" >> $GITHUB_OUTPUT
 
+            # Create description for status check
+            if [ "$FAILED" -eq "0" ] && [ "$TOTAL" -gt "0" ]; then
+              echo "description=$TOTAL/$TOTAL passed" >> $GITHUB_OUTPUT
+            elif [ "$FAILED" -gt "0" ]; then
+              echo "description=$PASSED/$TOTAL passed, $FAILED failed" >> $GITHUB_OUTPUT
+            else
+              echo "description=No tests found" >> $GITHUB_OUTPUT
+            fi
+
             echo "## 🎭 E2E Tests" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             if [ "$PASSED" -eq "0" ] && [ "$FAILED" -eq "0" ] && [ "$SKIPPED" -gt "0" ]; then
@@ -412,7 +559,12 @@ jobs:
           fi
 
           # Exit with failure if tests failed
+          if [ "$FAILED" -gt "0" ]; then
+            echo "::error::$FAILED E2E tests failed"
+            exit 1
+          fi
           if [ "${{ steps.e2e-tests.outcome }}" != "success" ]; then
+            echo "::error::E2E test step failed with outcome: ${{ steps.e2e-tests.outcome }}"
             exit 1
           fi
 
@@ -425,6 +577,25 @@ jobs:
             test-results/
             playwright-report/
           retention-days: 30
+
+      - name: Update commit status
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const description = '${{ steps.e2e-results.outputs.description }}' || 'Tests completed';
+            const state = '${{ steps.e2e-results.outcome }}' === 'success' ? 'success' : 'failure';
+
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: state,
+              context: 'E2E Tests',
+              description: description,
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
 
       - name: Comment PR with test results
         if: github.event_name == 'pull_request'
