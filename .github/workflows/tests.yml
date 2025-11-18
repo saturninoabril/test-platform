@@ -123,12 +123,13 @@ jobs:
           JWT_SECRET=$(openssl rand -hex 32)
           echo "JWT_SECRET=$JWT_SECRET" >> .env.test.api
           echo "JWT_ISSUER=test-platform" >> .env.test.api
-          # Generate test JWT tokens
-          VALID_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "ci-service" -r "write:reports,admin" -e "90d" 2>/dev/null)
+          # Generate test JWT tokens (export JWT_SECRET so generate-jwt can use it)
+          export JWT_SECRET
+          VALID_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "ci-service" -r "write:reports,admin" -e "90d")
           echo "VALID_JWT_TOKEN=$VALID_JWT_TOKEN" >> .env.test.api
           echo "JWT_TOKEN=$VALID_JWT_TOKEN" >> .env.test.api
           # Generate expired token (expires in 1 second)
-          EXPIRED_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "expired-token" -r "write:reports" -e "1s" 2>/dev/null)
+          EXPIRED_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "expired-token" -r "write:reports" -e "1s")
           sleep 2
           echo "EXPIRED_JWT_TOKEN=$EXPIRED_JWT_TOKEN" >> .env.test.api
           echo "MAX_EVENT_PAYLOAD_SIZE=1048576" >> .env.test.api
@@ -236,12 +237,13 @@ jobs:
           JWT_SECRET=$(openssl rand -hex 32)
           echo "JWT_SECRET=$JWT_SECRET" >> .env.test.pages
           echo "JWT_ISSUER=test-platform" >> .env.test.pages
-          # Generate test JWT tokens
-          VALID_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "ci-service" -r "write:reports,admin" -e "90d" 2>/dev/null)
+          # Generate test JWT tokens (export JWT_SECRET so generate-jwt can use it)
+          export JWT_SECRET
+          VALID_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "ci-service" -r "write:reports,admin" -e "90d")
           echo "VALID_JWT_TOKEN=$VALID_JWT_TOKEN" >> .env.test.pages
           echo "JWT_TOKEN=$VALID_JWT_TOKEN" >> .env.test.pages
           # Generate expired token (expires in 1 second)
-          EXPIRED_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "expired-token" -r "write:reports" -e "1s" 2>/dev/null)
+          EXPIRED_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "expired-token" -r "write:reports" -e "1s")
           sleep 2
           echo "EXPIRED_JWT_TOKEN=$EXPIRED_JWT_TOKEN" >> .env.test.pages
           echo "MAX_EVENT_PAYLOAD_SIZE=1048576" >> .env.test.pages
@@ -356,12 +358,13 @@ jobs:
           JWT_SECRET=$(openssl rand -hex 32)
           echo "JWT_SECRET=$JWT_SECRET" >> .env.test.e2e
           echo "JWT_ISSUER=test-platform" >> .env.test.e2e
-          # Generate test JWT tokens
-          VALID_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "ci-service" -r "write:reports,admin" -e "90d" 2>/dev/null)
+          # Generate test JWT tokens (export JWT_SECRET so generate-jwt can use it)
+          export JWT_SECRET
+          VALID_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "ci-service" -r "write:reports,admin" -e "90d")
           echo "VALID_JWT_TOKEN=$VALID_JWT_TOKEN" >> .env.test.e2e
           echo "JWT_TOKEN=$VALID_JWT_TOKEN" >> .env.test.e2e
           # Generate expired token (expires in 1 second)
-          EXPIRED_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "expired-token" -r "write:reports" -e "1s" 2>/dev/null)
+          EXPIRED_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "expired-token" -r "write:reports" -e "1s")
           sleep 2
           echo "EXPIRED_JWT_TOKEN=$EXPIRED_JWT_TOKEN" >> .env.test.e2e
           echo "MAX_EVENT_PAYLOAD_SIZE=1048576" >> .env.test.e2e
