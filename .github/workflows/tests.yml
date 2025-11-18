@@ -640,13 +640,49 @@ jobs:
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
 
-  playwright-artifact-upload:
-    name: Playwright Artifact Upload
+  # Job 1: Run Playwright tests in Playwright container and save artifacts
+  playwright-artifact-test:
+    name: Upload artifact - Playwright Tests
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     needs: [check, unit-tests]
     container:
       image: mcr.microsoft.com/playwright:v1.56.1-noble
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install Playwright test dependencies
+        run: npm ci
+        working-directory: ./test-run/playwright
+
+      - name: Run Playwright tests
+        id: tests
+        continue-on-error: true
+        run: npm test
+        working-directory: ./test-run/playwright
+
+      - name: Upload Playwright test results
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: playwright-test-results
+          path: test-run/playwright/results/
+          retention-days: 1
+
+  # Job 2: Upload Playwright artifacts to API server on ubuntu-latest
+  playwright-artifact-upload:
+    name: Upload artifact - Playwright
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: playwright-artifact-test
 
     services:
       postgres:
@@ -661,17 +697,11 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         ports:
-          - 5433:5432
+          - 5432:5432
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
-
-      - name: Install jq
-        run: |
-          apt-get update && apt-get install -y jq
-        env:
-          DEBIAN_FRONTEND: noninteractive
 
       - name: Setup Node.js 24
         uses: actions/setup-node@v6
@@ -679,15 +709,19 @@ jobs:
           node-version: '24'
           cache: 'npm'
 
-      # Install main app dependencies and start server
+      - name: Download Playwright test results
+        uses: actions/download-artifact@v5
+        with:
+          name: playwright-test-results
+          path: test-run/playwright/results/
+
       - name: Install main app dependencies
         run: npm ci
 
-      - name: Setup test database
+      - name: Setup test database and environment
         run: |
           # Set database connection for artifact upload test
-          # Use service name 'postgres' for Docker container networking
-          echo "DB_HOST=postgres" >> .env
+          echo "DB_HOST=localhost" >> .env
           echo "DB_PORT=5432" >> .env
           echo "DB_USER=change_user" >> .env
           echo "DB_PASSWORD=change_password" >> .env
@@ -705,13 +739,20 @@ jobs:
           echo "API_URL=http://localhost:3001" >> .env
 
       - name: Push database schema
-        run: npm run db:push
+        run: |
+          set -a
+          . .env
+          set +a
+          npm run db:push
 
       - name: Start Next.js server
         run: |
+          set -a
+          . .env
+          set +a
           npm run dev &
           SERVER_PID=$!
-          # Wait for server to be ready with better health check
+          # Wait for server to be ready
           echo "Waiting for server to start (PID: $SERVER_PID)..."
           RETRIES=0
           MAX_RETRIES=30
@@ -732,44 +773,15 @@ jobs:
         env:
           CI: true
 
-      # Install test-run/playwright dependencies and run tests
-      - name: Install Playwright test dependencies
-        run: npm ci
-        working-directory: ./test-run/playwright
-
-      # Browsers are pre-installed in the Docker image, no need to install
-
-      - name: Run Playwright tests
-        id: tests
-        continue-on-error: true
-        run: npm test
-        working-directory: ./test-run/playwright
-
       - name: Upload test artifact to local API server
         if: always()
         run: |
-          # Debug: Show current directory and search for .env
-          echo "Current directory: $(pwd)"
-          echo "Looking for .env file..."
-          echo "Contents of current directory:"
-          ls -la
-          echo "Searching for .env files in working directory:"
-          find . -maxdepth 2 -name ".env*" -type f 2>/dev/null || true
-
-          # Verify .env file exists
-          if [ ! -f .env ]; then
-            echo "Error: .env file not found in $(pwd)"
-            exit 1
-          fi
-
-          # Load JWT_TOKEN from .env file using full path
-          ENV_FILE="$(pwd)/.env"
-          echo "Sourcing env file: $ENV_FILE"
+          # Load JWT_TOKEN from .env file
           set -a
-          . "$ENV_FILE"
+          . .env
           set +a
 
-          # Create payload with artifact and GitHub metadata (read JSON from file to avoid arg list limit)
+          # Create payload with artifact and GitHub metadata
           PAYLOAD=$(jq \
             --arg framework "playwright" \
             --arg repo "${{ github.repository }}" \
@@ -822,21 +834,57 @@ jobs:
             exit 1
           fi
 
-      - name: Upload Playwright report artifact
-        if: always()
-        uses: actions/upload-artifact@v5
-        with:
-          name: playwright-artifact-upload-report
-          path: test-run/playwright/results/
-          retention-days: 30
-
-  cypress-artifact-upload:
-    name: Cypress Artifact Upload
+  # Job 3: Run Cypress tests in Cypress container and save artifacts
+  cypress-artifact-test:
+    name: Upload artifact - Cypress Tests
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     needs: [check, unit-tests]
     container:
       image: cypress/browsers:node-24.11.1-chrome-142.0.7444.162-1-ff-145.0-edge-142.0.3595.65-1
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install Cypress test dependencies
+        run: npm ci
+        working-directory: ./test-run/cypress
+
+      - name: Run Cypress tests
+        id: tests
+        continue-on-error: true
+        run: npm test
+        working-directory: ./test-run/cypress
+
+      - name: Upload Cypress test results
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: cypress-test-results
+          path: test-run/cypress/results/
+          retention-days: 1
+
+      - name: Upload Cypress videos
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: cypress-test-videos
+          path: test-run/cypress/cypress/videos/
+          retention-days: 1
+
+  # Job 4: Upload Cypress artifacts to API server on ubuntu-latest
+  cypress-artifact-upload:
+    name: Upload artifact - Cypress
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: cypress-artifact-test
 
     services:
       postgres:
@@ -851,17 +899,11 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         ports:
-          - 5433:5432
+          - 5432:5432
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
-
-      - name: Install jq
-        run: |
-          apt-get update && apt-get install -y jq
-        env:
-          DEBIAN_FRONTEND: noninteractive
 
       - name: Setup Node.js 24
         uses: actions/setup-node@v6
@@ -869,15 +911,19 @@ jobs:
           node-version: '24'
           cache: 'npm'
 
-      # Install main app dependencies and start server
+      - name: Download Cypress test results
+        uses: actions/download-artifact@v5
+        with:
+          name: cypress-test-results
+          path: test-run/cypress/results/
+
       - name: Install main app dependencies
         run: npm ci
 
-      - name: Setup test database
+      - name: Setup test database and environment
         run: |
           # Set database connection for artifact upload test
-          # Use service name 'postgres' for Docker container networking
-          echo "DB_HOST=postgres" >> .env
+          echo "DB_HOST=localhost" >> .env
           echo "DB_PORT=5432" >> .env
           echo "DB_USER=change_user" >> .env
           echo "DB_PASSWORD=change_password" >> .env
@@ -895,13 +941,20 @@ jobs:
           echo "API_URL=http://localhost:3001" >> .env
 
       - name: Push database schema
-        run: npm run db:push
+        run: |
+          set -a
+          . .env
+          set +a
+          npm run db:push
 
       - name: Start Next.js server
         run: |
+          set -a
+          . .env
+          set +a
           npm run dev &
           SERVER_PID=$!
-          # Wait for server to be ready with better health check
+          # Wait for server to be ready
           echo "Waiting for server to start (PID: $SERVER_PID)..."
           RETRIES=0
           MAX_RETRIES=30
@@ -922,44 +975,15 @@ jobs:
         env:
           CI: true
 
-      # Install test-run/cypress dependencies and run tests
-      - name: Install Cypress test dependencies
-        run: npm ci
-        working-directory: ./test-run/cypress
-
-      # Browsers are pre-installed in the Docker image, no need to install
-
-      - name: Run Cypress tests
-        id: tests
-        continue-on-error: true
-        run: npm test
-        working-directory: ./test-run/cypress
-
       - name: Upload test artifact to local API server
         if: always()
         run: |
-          # Debug: Show current directory and search for .env
-          echo "Current directory: $(pwd)"
-          echo "Looking for .env file..."
-          echo "Contents of current directory:"
-          ls -la
-          echo "Searching for .env files in working directory:"
-          find . -maxdepth 2 -name ".env*" -type f 2>/dev/null || true
-
-          # Verify .env file exists
-          if [ ! -f .env ]; then
-            echo "Error: .env file not found in $(pwd)"
-            exit 1
-          fi
-
-          # Load JWT_TOKEN from .env file using full path
-          ENV_FILE="$(pwd)/.env"
-          echo "Sourcing env file: $ENV_FILE"
+          # Load JWT_TOKEN from .env file
           set -a
-          . "$ENV_FILE"
+          . .env
           set +a
 
-          # Create payload with artifact and GitHub metadata (read JSON from file to avoid arg list limit)
+          # Create payload with artifact and GitHub metadata
           PAYLOAD=$(jq \
             --arg framework "cypress" \
             --arg repo "${{ github.repository }}" \
@@ -1011,19 +1035,3 @@ jobs:
             echo "❌ Artifact upload failed"
             exit 1
           fi
-
-      - name: Upload Cypress videos
-        if: always()
-        uses: actions/upload-artifact@v5
-        with:
-          name: cypress-artifact-upload-videos
-          path: test-run/cypress/cypress/videos/
-          retention-days: 30
-
-      - name: Upload Cypress report artifact
-        if: always()
-        uses: actions/upload-artifact@v5
-        with:
-          name: cypress-artifact-upload-report
-          path: test-run/cypress/results/
-          retention-days: 30
