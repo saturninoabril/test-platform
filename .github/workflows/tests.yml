@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   check:
-    name: Check (Lint + Format)
+    name: Check
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -39,19 +39,8 @@ jobs:
         env:
           CI: true
 
-      - name: Add check summary
-        if: always()
-        run: |
-          echo "## 🔍 Check (Lint + Format)" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          if [ "${{ steps.check.outcome }}" == "success" ]; then
-            echo "✅ All checks passed" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "❌ Checks failed" >> $GITHUB_STEP_SUMMARY
-          fi
-
   unit-tests:
-    name: Unit Tests
+    name: Unit
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: [check]
@@ -73,42 +62,8 @@ jobs:
         id: unit-tests
         run: |
           npm run test:unit 2>&1 | tee unit-test-output.log
-        continue-on-error: true
         env:
           CI: true
-
-      - name: Parse unit test results
-        if: always()
-        id: unit-results
-        run: |
-          if [ -f unit-test-output.log ]; then
-            PASSED=$(grep -oP '(\d+) passed' unit-test-output.log | tail -1 | grep -oP '\d+' || echo "0")
-            FAILED=$(grep -oP '(\d+) failed' unit-test-output.log | tail -1 | grep -oP '\d+' || echo "0")
-            SKIPPED=$(grep -oP '(\d+) skipped' unit-test-output.log | tail -1 | grep -oP '\d+' || echo "0")
-            TOTAL=$((PASSED + FAILED))
-
-            echo "passed=$PASSED" >> $GITHUB_OUTPUT
-            echo "failed=$FAILED" >> $GITHUB_OUTPUT
-            echo "skipped=$SKIPPED" >> $GITHUB_OUTPUT
-            echo "total=$TOTAL" >> $GITHUB_OUTPUT
-
-            echo "## 🧪 Unit Tests" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            if [ "$PASSED" -eq "0" ] && [ "$FAILED" -eq "0" ] && [ "$SKIPPED" -gt "0" ]; then
-              echo "⏭️ All $SKIPPED tests skipped" >> $GITHUB_STEP_SUMMARY
-            elif [ "$FAILED" -eq "0" ] && [ "$TOTAL" -gt "0" ]; then
-              echo "✅ All $TOTAL tests passed" >> $GITHUB_STEP_SUMMARY
-            elif [ "$FAILED" -gt "0" ]; then
-              echo "❌ $FAILED of $TOTAL tests failed" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "⚠️ No test results found" >> $GITHUB_STEP_SUMMARY
-            fi
-          fi
-
-          # Exit with failure if tests failed
-          if [ "${{ steps.unit-tests.outcome }}" != "success" ]; then
-            exit 1
-          fi
 
       - name: Run unit tests with coverage
         run: npm run test:unit:coverage
@@ -116,16 +71,8 @@ jobs:
         env:
           CI: true
 
-      - name: Upload coverage report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-unit-${{ github.run_number }}
-          path: coverage/
-          retention-days: 30
-
   api-tests:
-    name: API Tests
+    name: API
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs: [unit-tests]
@@ -160,18 +107,32 @@ jobs:
 
       - name: Setup test environment files
         run: |
-          # Create .env.test.api from .env.test if it exists
-          if [ -f .env.test ]; then
-            cp .env.test .env.test.api
-          fi
+          # Create fresh .env.test.api (don't copy .env.test to avoid duplicate keys)
           # Set database connection for API tests
-          echo "DB_HOST=localhost" >> .env.test.api
+          echo "DB_HOST=localhost" > .env.test.api
           echo "DB_PORT=5433" >> .env.test.api
           echo "DB_USER=change_user" >> .env.test.api
           echo "DB_PASSWORD=change_password" >> .env.test.api
           echo "DB_NAME=test_api_db" >> .env.test.api
           echo "NODE_ENV=test" >> .env.test.api
           echo "BASE_URL=http://localhost:3001" >> .env.test.api
+          # Generate secrets for NextAuth and JWT
+          AUTH_SECRET=$(openssl rand -base64 32)
+          echo "AUTH_SECRET=$AUTH_SECRET" >> .env.test.api
+          echo "AUTH_URL=http://localhost:3001" >> .env.test.api
+          JWT_SECRET=$(openssl rand -hex 32)
+          echo "JWT_SECRET=$JWT_SECRET" >> .env.test.api
+          echo "JWT_ISSUER=test-platform" >> .env.test.api
+          # Generate test JWT tokens
+          VALID_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "ci-service" -r "write:reports,admin" -e "90d" 2>/dev/null)
+          echo "VALID_JWT_TOKEN=$VALID_JWT_TOKEN" >> .env.test.api
+          echo "JWT_TOKEN=$VALID_JWT_TOKEN" >> .env.test.api
+          # Generate expired token (expires in 1 second)
+          EXPIRED_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "expired-token" -r "write:reports" -e "1s" 2>/dev/null)
+          sleep 2
+          echo "EXPIRED_JWT_TOKEN=$EXPIRED_JWT_TOKEN" >> .env.test.api
+          echo "MAX_EVENT_PAYLOAD_SIZE=1048576" >> .env.test.api
+          echo "PORT=3001" >> .env.test.api
 
       - name: Run API tests
         id: api-tests
@@ -224,11 +185,11 @@ jobs:
           retention-days: 30
 
   page-tests:
-    name: Page Tests
+    name: Page
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs: [api-tests]
-
+    
     services:
       postgres:
         image: postgres:17.6
@@ -259,18 +220,32 @@ jobs:
 
       - name: Setup test environment files
         run: |
-          # Create .env.test.pages from .env.test if it exists
-          if [ -f .env.test ]; then
-            cp .env.test .env.test.pages
-          fi
+          # Create fresh .env.test.pages (don't copy .env.test to avoid duplicate keys)
           # Set database connection for page tests
-          echo "DB_HOST=localhost" >> .env.test.pages
+          echo "DB_HOST=localhost" > .env.test.pages
           echo "DB_PORT=5433" >> .env.test.pages
           echo "DB_USER=change_user" >> .env.test.pages
           echo "DB_PASSWORD=change_password" >> .env.test.pages
           echo "DB_NAME=test_pages_db" >> .env.test.pages
           echo "NODE_ENV=test" >> .env.test.pages
           echo "BASE_URL=http://localhost:3001" >> .env.test.pages
+          # Generate secrets for NextAuth and JWT
+          AUTH_SECRET=$(openssl rand -base64 32)
+          echo "AUTH_SECRET=$AUTH_SECRET" >> .env.test.pages
+          echo "AUTH_URL=http://localhost:3001" >> .env.test.pages
+          JWT_SECRET=$(openssl rand -hex 32)
+          echo "JWT_SECRET=$JWT_SECRET" >> .env.test.pages
+          echo "JWT_ISSUER=test-platform" >> .env.test.pages
+          # Generate test JWT tokens
+          VALID_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "ci-service" -r "write:reports,admin" -e "90d" 2>/dev/null)
+          echo "VALID_JWT_TOKEN=$VALID_JWT_TOKEN" >> .env.test.pages
+          echo "JWT_TOKEN=$VALID_JWT_TOKEN" >> .env.test.pages
+          # Generate expired token (expires in 1 second)
+          EXPIRED_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "expired-token" -r "write:reports" -e "1s" 2>/dev/null)
+          sleep 2
+          echo "EXPIRED_JWT_TOKEN=$EXPIRED_JWT_TOKEN" >> .env.test.pages
+          echo "MAX_EVENT_PAYLOAD_SIZE=1048576" >> .env.test.pages
+          echo "PORT=3001" >> .env.test.pages
 
       - name: Run page tests
         id: page-tests
@@ -323,12 +298,14 @@ jobs:
           retention-days: 30
 
   e2e-tests:
-    name: E2E Tests
+    name: E2E
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs:
-      - page-tests
+      - check
+      - unit-tests
       - api-tests
+      - page-tests
 
     services:
       postgres:
@@ -363,18 +340,32 @@ jobs:
 
       - name: Setup test environment files
         run: |
-          # Create .env.test.e2e from .env.test if it exists
-          if [ -f .env.test ]; then
-            cp .env.test .env.test.e2e
-          fi
+          # Create fresh .env.test.e2e (don't copy .env.test to avoid duplicate keys)
           # Set database connection for E2E tests
-          echo "DB_HOST=localhost" >> .env.test.e2e
+          echo "DB_HOST=localhost" > .env.test.e2e
           echo "DB_PORT=5433" >> .env.test.e2e
           echo "DB_USER=change_user" >> .env.test.e2e
           echo "DB_PASSWORD=change_password" >> .env.test.e2e
           echo "DB_NAME=test_e2e_db" >> .env.test.e2e
           echo "NODE_ENV=test" >> .env.test.e2e
           echo "BASE_URL=http://localhost:3001" >> .env.test.e2e
+          # Generate secrets for NextAuth and JWT
+          AUTH_SECRET=$(openssl rand -base64 32)
+          echo "AUTH_SECRET=$AUTH_SECRET" >> .env.test.e2e
+          echo "AUTH_URL=http://localhost:3001" >> .env.test.e2e
+          JWT_SECRET=$(openssl rand -hex 32)
+          echo "JWT_SECRET=$JWT_SECRET" >> .env.test.e2e
+          echo "JWT_ISSUER=test-platform" >> .env.test.e2e
+          # Generate test JWT tokens
+          VALID_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "ci-service" -r "write:reports,admin" -e "90d" 2>/dev/null)
+          echo "VALID_JWT_TOKEN=$VALID_JWT_TOKEN" >> .env.test.e2e
+          echo "JWT_TOKEN=$VALID_JWT_TOKEN" >> .env.test.e2e
+          # Generate expired token (expires in 1 second)
+          EXPIRED_JWT_TOKEN=$(npm --silent run generate-jwt -- -q -s "expired-token" -r "write:reports" -e "1s" 2>/dev/null)
+          sleep 2
+          echo "EXPIRED_JWT_TOKEN=$EXPIRED_JWT_TOKEN" >> .env.test.e2e
+          echo "MAX_EVENT_PAYLOAD_SIZE=1048576" >> .env.test.e2e
+          echo "PORT=3001" >> .env.test.e2e
 
       - name: Run E2E tests
         id: e2e-tests
@@ -438,15 +429,14 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const lintStatus = '${{ needs.lint.result }}';
-            const formatStatus = '${{ needs.format-check.result }}';
+            const checkStatus = '${{ needs.check.result }}';
             const unitStatus = '${{ needs.unit-tests.result }}';
             const apiStatus = '${{ needs.api-tests.result }}';
             const pageStatus = '${{ needs.page-tests.result }}';
-            const e2eStatus = '${{ needs.e2e-tests.result }}';
+            const e2eStatus = '${{ steps.e2e-tests.outcome }}';
 
             const statusIcon = (status) => status === 'success' ? '✅' : '❌';
-            const allPassed = [lintStatus, formatStatus, unitStatus, apiStatus, pageStatus, e2eStatus].every(s => s === 'success');
+            const allPassed = [checkStatus, unitStatus, apiStatus, pageStatus, e2eStatus].every(s => s === 'success');
 
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
 
@@ -460,8 +450,7 @@ jobs:
 
             message += '| Check/Test Suite | Status |\n';
             message += '|------------------|--------|\n';
-            message += `| Lint | ${statusIcon(lintStatus)} ${lintStatus} |\n`;
-            message += `| Format Check | ${statusIcon(formatStatus)} ${formatStatus} |\n`;
+            message += `| Code Quality (Lint + Format) | ${statusIcon(checkStatus)} ${checkStatus} |\n`;
             message += `| Unit Tests | ${statusIcon(unitStatus)} ${unitStatus} |\n`;
             message += `| API Tests | ${statusIcon(apiStatus)} ${apiStatus} |\n`;
             message += `| Page Tests | ${statusIcon(pageStatus)} ${pageStatus} |\n`;
