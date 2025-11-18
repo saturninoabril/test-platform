@@ -1,15 +1,17 @@
 name: Artifact upload test - Cypress
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Tests"]
+    types:
+      - completed
     branches: [main, 'release/*']
-  pull_request:
-    branches: [main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     container:
       image: cypress/browsers:node-24.11.1-chrome-142.0.7444.162-1-ff-145.0-edge-142.0.3595.65-1
       options: --user 1001
@@ -31,10 +33,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js 24
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: 'npm'
