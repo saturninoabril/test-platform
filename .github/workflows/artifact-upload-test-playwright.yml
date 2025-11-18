@@ -10,6 +10,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    container:
+      image: mcr.microsoft.com/playwright:v1.56.1-noble
+      options: --user 1001
 
     services:
       postgres:
@@ -76,9 +79,7 @@ jobs:
         run: npm ci
         working-directory: ./test-run/playwright
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
-        working-directory: ./test-run/playwright
+      # Browsers are pre-installed in the Docker image, no need to install
 
       - name: Run Playwright tests
         id: tests
@@ -94,13 +95,9 @@ jobs:
           source .env
           set +a
 
-          # Read the artifact JSON file
-          ARTIFACT=$(cat test-run/playwright/results/json/test-results.json)
-
-          # Create payload with artifact and GitHub metadata
-          PAYLOAD=$(jq -n \
+          # Create payload with artifact and GitHub metadata (read JSON from file to avoid arg list limit)
+          PAYLOAD=$(jq \
             --arg framework "playwright" \
-            --argjson artifact "$ARTIFACT" \
             --arg repo "${{ github.repository }}" \
             --arg sha "${{ github.sha }}" \
             --arg headRef "${{ github.head_ref }}" \
@@ -114,7 +111,7 @@ jobs:
             --arg runner "${{ runner.name }}" \
             '{
               framework: $framework,
-              artifact: $artifact,
+              artifact: .,
               githubRepository: $repo,
               githubSha: $sha,
               githubHeadRef: $headRef,
@@ -126,7 +123,7 @@ jobs:
               githubRunAttempt: $runAttempt,
               githubJob: $job,
               runnerName: $runner
-            }')
+            }' test-run/playwright/results/json/test-results.json)
 
           # Send to local API server
           RESPONSE=$(curl -X POST "http://localhost:3001/api/test-reports" \

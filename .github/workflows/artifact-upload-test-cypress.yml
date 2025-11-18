@@ -10,6 +10,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    container:
+      image: cypress/browsers:node-24.11.1-chrome-142.0.7444.162-1-ff-145.0-edge-142.0.3595.65-1
+      options: --user 1001
 
     services:
       postgres:
@@ -76,6 +79,8 @@ jobs:
         run: npm ci
         working-directory: ./test-run/cypress
 
+      # Browsers are pre-installed in the Docker image, no need to install
+
       - name: Run Cypress tests
         id: tests
         continue-on-error: true
@@ -90,13 +95,9 @@ jobs:
           source .env
           set +a
 
-          # Read the artifact JSON file
-          ARTIFACT=$(cat test-run/cypress/results/mochawesome-report/mochawesome.json)
-
-          # Create payload with artifact and GitHub metadata
-          PAYLOAD=$(jq -n \
+          # Create payload with artifact and GitHub metadata (read JSON from file to avoid arg list limit)
+          PAYLOAD=$(jq \
             --arg framework "cypress" \
-            --argjson artifact "$ARTIFACT" \
             --arg repo "${{ github.repository }}" \
             --arg sha "${{ github.sha }}" \
             --arg headRef "${{ github.head_ref }}" \
@@ -110,7 +111,7 @@ jobs:
             --arg runner "${{ runner.name }}" \
             '{
               framework: $framework,
-              artifact: $artifact,
+              artifact: .,
               githubRepository: $repo,
               githubSha: $sha,
               githubHeadRef: $headRef,
@@ -122,7 +123,7 @@ jobs:
               githubRunAttempt: $runAttempt,
               githubJob: $job,
               runnerName: $runner
-            }')
+            }' test-run/cypress/results/mochawesome-report/mochawesome.json)
 
           # Send to local API server
           RESPONSE=$(curl -X POST "http://localhost:3001/api/test-reports" \
